@@ -39,20 +39,12 @@ namespace PortfolioManagementSystem
             InitializeComponent();
         }
 
-
-        
-        // Handler of Opening Add/Delete User Tab Button
-        private void OpenAddUserTab(object sender, RoutedEventArgs e)
-        {
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 2;
-            //DialogResult = true;
-        }
-
-
         // Handler of Add Transaction Button
         private void AddTransaction(object sender, RoutedEventArgs e)
         {
             AddTransaction();
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+            tabNewTransaction.Visibility = Visibility.Collapsed;
         }
 
         private void ClosingWindow(object sender, System.ComponentModel.CancelEventArgs e)
@@ -65,55 +57,73 @@ namespace PortfolioManagementSystem
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        
-        private void AddItemsComboBox(object sender, RoutedEventArgs e)
-        {
-            AddItemsToComboBox(comboBoxTransactionType);
-        }
-
         // Enable Compare button when multiple stocks are selected
-        private void EnableCompare(object sender, SelectionChangedEventArgs e)
+        private void EnableButtons(object sender, SelectionChangedEventArgs e)
         {
-            if(dataGridPortfolio.SelectedItems.Count >= 2)
+            if(dataGridInvestments.SelectedItems.Count == 0)
             {
+                btnAnalyse.IsEnabled = false;
+                btnCompare.IsEnabled = false;
+            }
+            if(dataGridInvestments.SelectedItems.Count == 1)
+            {
+                btnAnalyse.IsEnabled = true;
+            }
+            if(dataGridInvestments.SelectedItems.Count >= 2)
+            {
+                btnAnalyse.IsEnabled = false;
                 btnCompare.IsEnabled = true;
             }
         }
-
-        private void Delete(object sender, RoutedEventArgs e)
+        
+        // Load Grid when opening First Time
+        private void LoadGrids(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        // Compare Portfolio when Compare Button is Pressed
-        private void ComparePortfolio(object sender, RoutedEventArgs e)
-        {
-            tabCompare.Visibility = Visibility.Visible;
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 1;
+            LoadGrid<Investment>
+                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current",
+                investments, dataGridInvestments);
+            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/all",
+                transactions, dataGridTransaction);
         }
 
         // Load Refreshed Grid when Show Portfolio tab is Selected
-        private void RefreshGridPortFolioTabSelection(object sender, SelectionChangedEventArgs e)
+        private void TabSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (tabCtrlPorfolioManagementSystem.SelectedIndex == 0)
             {
                 //RefreshGrid();
             }
-            if(tabCtrlPorfolioManagementSystem.SelectedIndex != 1)
+            if (tabCtrlPorfolioManagementSystem.SelectedIndex != 1 
+                || tabCtrlPorfolioManagementSystem.SelectedIndex != 2
+                || tabCtrlPorfolioManagementSystem.SelectedIndex != 4)
             {
                 tabCompare.Visibility = Visibility.Collapsed;
+                tabAnalyseStock.Visibility = Visibility.Collapsed;
+                tabNewTransaction.Visibility = Visibility.Collapsed;
             }
+
         }
 
-        // Load Grid when opening First Time
-        private void LoadGrids(object sender, RoutedEventArgs e)
+        private void OpenNewTransactionTab(object sender, RoutedEventArgs e)
         {
-            LoadGrid<Investment>
-                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current", 
-                investments, dataGridPortfolio);
-            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/all",
-                transactions, dataGridTransaction);
+            
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 2;
+            tabNewTransaction.Visibility = Visibility.Visible;
         }
+
+        private void OpenAnalyseTab(object sender, RoutedEventArgs e)
+        {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
+            tabAnalyseStock.Visibility = Visibility.Visible;
+        }
+
+        // Compare Portfolio when Compare Button is Pressed
+        private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
+        {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 4;
+            tabCompare.Visibility = Visibility.Visible;
+        }
+
     }
 
     public partial class PorfolioManagementSystemWindow
@@ -130,17 +140,27 @@ namespace PortfolioManagementSystem
 
         private void AddTransaction()
         {
+            radioButtonBuy.IsChecked = true;
+            Transaction.TransactionType transactionType;
+            if (radioButtonBuy.IsChecked == true)
+            {
+                transactionType = Transaction.TransactionType.Buy;
+            }
+            else
+            {
+                transactionType = Transaction.TransactionType.Sell;
+            }
             Transaction transaction = new Transaction(txtTicker.Text, 
-                (Transaction.TransactionType)comboBoxTransactionType.SelectedItem, "", 
+                transactionType, "", 
                 int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
             MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
             string jsonString = helper.GenerateJsonStringFromStream(mStream);
             string baseAddress =
-                "http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/new";
+                "http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/new";
             helper.PostJsonData(baseAddress, jsonString);
-            ResetAddTransactionFrom();
-            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/all", transactions, dataGridTransaction);
+            ResetAddTransactionForm();
+            LoadGrid<Transaction>("http://10.87.204.218:8080/PortfolioManagementSystemWeb/rest/transactions/all", transactions, dataGridTransaction);
         }
 
         private void AddItemsToComboBox(ComboBox comboBox)
@@ -149,12 +169,11 @@ namespace PortfolioManagementSystem
             comboBox.Items.Add(Transaction.TransactionType.Sell);
         }
 
-        private void ResetAddTransactionFrom()
+        private void ResetAddTransactionForm()
         {
             txtNoOfUnits.Text = "";
             txtStockPrice.Text = "";
             txtTicker.Text = "";
-            comboBoxTransactionType.Text = "";
         }
     }
 }

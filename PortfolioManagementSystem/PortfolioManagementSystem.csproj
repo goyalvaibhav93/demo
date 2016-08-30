@@ -73,9 +73,6 @@
       <DependentUpon>TestConnection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Transaction.cs" />
-    <Compile Include="Transactions.xaml.cs">
-      <DependentUpon>Transactions.xaml</DependentUpon>
-    </Compile>
     <Compile Include="User.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -94,10 +91,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TestConnection.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Transactions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

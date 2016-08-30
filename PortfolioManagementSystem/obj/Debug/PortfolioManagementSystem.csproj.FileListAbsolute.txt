@@ -4,13 +4,11 @@ C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.csprojResolveAssemblyReference.cache
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\MainWindow.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\TestConnection.g.cs
-C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\Transactions.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\App.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem_MarkupCompile.cache
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem_MarkupCompile.lref
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\MainWindow.baml
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\TestConnection.baml
-C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\Transactions.baml
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.g.resources
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.Properties.Resources.resources
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.csproj.GenerateResource.Cache
