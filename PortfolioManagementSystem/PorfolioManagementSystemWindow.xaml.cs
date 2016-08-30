@@ -24,7 +24,9 @@ namespace PortfolioManagementSystem
     {
         // Object of helper class
         HelperClass helper = new HelperClass();
-        
+
+        // Object of Transactions
+        List<Transaction> transactions = new List<Transaction>();
         
         // Object of Stocks
         static List<Stock> stocks = new List<Stock>();
@@ -47,39 +49,10 @@ namespace PortfolioManagementSystem
         }
 
 
-        // Handler of Add User Button
-        private void AddUser(object sender, RoutedEventArgs e)
+        // Handler of Add Transaction Button
+        private void AddTransaction(object sender, RoutedEventArgs e)
         {
-            //Stock newStock = new Stock(txtTicker.Text, int.Parse(txtShareId.Text));
-            //stocks.Add(newStock);
-
-            //Investment investment = new Investment(123, "AAPL", 38384998, 78, 50);
-            Investment investment =
-                new Investment(123, txtTicker.Text, long.Parse(txtBuyDate.Text), int.Parse(txtBuyPrice.Text), int.Parse(txtNoOfUnits.Text));
-            MemoryStream mStream = helper.SerializeObjectToJsonStream(investment);
-            string jsonString = helper.GenerateJsonStringFromStream(mStream);
-            string baseAddress =
-                "http://10.87.207.27:8080/PortfolioManagementSystemWeb/rest/posttest";
-            helper.PostJsonData(baseAddress, jsonString);
-        }
-
-        private void RefreshGrid(object sender, RoutedEventArgs e)
-        {
-           
-            //string jsonString = helper.DownloadJsonString
-            //    ("http://10.87.200.248:8080/PortfolioManagementSystemWeb/rest/performanceSummary");
-            
-            string jsonString = helper.DownloadJsonString
-                ("http://10.87.207.27:8080/PortfolioManagementSystemWeb/rest/investments/current");
-
-            //MessageBox.Show(jsonString1);
-            Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
-            //MessageBox.Show(jsonStream.ToString());
-            //stocks = helper.UnserializeObjectFromJsonStream<Stock>(jsonStream);
-            investments = helper.UnserializeListObjectFromJsonStream<Investment>(jsonStream);
-            //investments.Add(new Investment(stocks[0], 110, DateTime.Now, 0, 0, 0));
-           
-            dataGridMyStocks.ItemsSource = investments;
+            AddTransaction();
         }
 
         private void ClosingWindow(object sender, System.ComponentModel.CancelEventArgs e)
@@ -92,39 +65,97 @@ namespace PortfolioManagementSystem
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
         }
 
-        private void AddItemsToComboBox(ComboBox comboBox)
-        {
-            comboBox.Items.Add(Portfolio.PortfolioType.Automobile);
-            comboBox.Items.Add(Portfolio.PortfolioType.Finance);
-            comboBox.Items.Add(Portfolio.PortfolioType.IT);
-        }
-
+        
         private void AddItemsComboBox(object sender, RoutedEventArgs e)
         {
-            AddItemsToComboBox(comboBoxShowPortfolioType);
-            AddItemsToComboBox(comboBoxPortfolioType);
+            AddItemsToComboBox(comboBoxTransactionType);
         }
 
-        private void Modify(object sender, RoutedEventArgs e)
+        // Enable Compare button when multiple stocks are selected
+        private void EnableCompare(object sender, SelectionChangedEventArgs e)
         {
-
-        }
-
-        private void EnableModify(object sender, SelectionChangedEventArgs e)
-        {
-            btnModify.IsEnabled = true;
-            btnDelete.IsEnabled = true;
-        }
-
-        private void Enable(object sender, RoutedEventArgs e)
-        {
-            btnModify.IsEnabled = true;
-            btnDelete.IsEnabled = true;
+            if(dataGridPortfolio.SelectedItems.Count >= 2)
+            {
+                btnCompare.IsEnabled = true;
+            }
         }
 
         private void Delete(object sender, RoutedEventArgs e)
         {
 
         }
+
+        // Compare Portfolio when Compare Button is Pressed
+        private void ComparePortfolio(object sender, RoutedEventArgs e)
+        {
+            tabCompare.Visibility = Visibility.Visible;
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 1;
+        }
+
+        // Load Refreshed Grid when Show Portfolio tab is Selected
+        private void RefreshGridPortFolioTabSelection(object sender, SelectionChangedEventArgs e)
+        {
+            if (tabCtrlPorfolioManagementSystem.SelectedIndex == 0)
+            {
+                //RefreshGrid();
+            }
+            if(tabCtrlPorfolioManagementSystem.SelectedIndex != 1)
+            {
+                tabCompare.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        // Load Grid when opening First Time
+        private void LoadGrids(object sender, RoutedEventArgs e)
+        {
+            LoadGrid<Investment>
+                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current", 
+                investments, dataGridPortfolio);
+            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/all",
+                transactions, dataGridTransaction);
+        }
+    }
+
+    public partial class PorfolioManagementSystemWindow
+    {
+        private void LoadGrid<T>(string uri, List<T> obj, DataGrid dataGrid)
+        {
+            string jsonString = helper.DownloadJsonString(uri);
+            
+            Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
+            obj = helper.UnserializeListObjectFromJsonStream<T>(jsonStream);
+
+            dataGrid.ItemsSource = obj;
+        }
+
+        private void AddTransaction()
+        {
+            Transaction transaction = new Transaction(txtTicker.Text, 
+                (Transaction.TransactionType)comboBoxTransactionType.SelectedItem, "", 
+                int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
+
+            MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
+            string jsonString = helper.GenerateJsonStringFromStream(mStream);
+            string baseAddress =
+                "http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/new";
+            helper.PostJsonData(baseAddress, jsonString);
+            ResetAddTransactionFrom();
+            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/sun32/transactions/all", transactions, dataGridTransaction);
+        }
+
+        private void AddItemsToComboBox(ComboBox comboBox)
+        {
+            comboBox.Items.Add(Transaction.TransactionType.Buy);
+            comboBox.Items.Add(Transaction.TransactionType.Sell);
+        }
+
+        private void ResetAddTransactionFrom()
+        {
+            txtNoOfUnits.Text = "";
+            txtStockPrice.Text = "";
+            txtTicker.Text = "";
+            comboBoxTransactionType.Text = "";
+        }
     }
 }
+

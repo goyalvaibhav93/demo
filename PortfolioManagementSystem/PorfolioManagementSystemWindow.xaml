@@ -6,47 +6,50 @@
         xmlns:local="clr-namespace:PortfolioManagementSystem"
         mc:Ignorable="d"
         Title="Porfolio Management System Window" x:Name ="porfolioManagementSystemWindow" 
-        Height="{Binding SystemParameters.PrimaryScreenHeight}"  Width="{Binding SystemParameters.PrimaryScreenWidth}" 
-        Closing="ClosingWindow" Loaded="AddItemsComboBox">
+        Height="{Binding SystemParameters.PrimaryScreenHeight}"  
+        Width="{Binding SystemParameters.PrimaryScreenWidth}" 
+        Closing="ClosingWindow" Loaded="LoadGrids"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
 
     <Grid x:Name="porfolioManagementSystemGrid" Width="{Binding ActualWidth, 
         ElementName=porfolioManagementSystemWindow}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="29*" />
+            <RowDefinition Height="476*" />
+        </Grid.RowDefinitions>
 
-        <TabControl x:Name="tabCtrlPorfolioManagementSystem"
-                    Margin="-2,0,10,10">
-            <TabItem Header="Portfolio" >
+        <TextBox x:Name="txtUserName" Text="Welcome" IsReadOnly="True" Margin="543,0,0,2"/>
+
+        <TabControl x:Name="tabCtrlPorfolioManagementSystem" Loaded="AddItemsComboBox"
+                    Margin="10,11,-2,31" SelectionChanged="RefreshGridPortFolioTabSelection" Grid.RowSpan="2" >
+            <TabItem x:Name="tabPortfolio" Header="Portfolio" Margin="-2,0,-2,-1" 
+                     Height="23" VerticalAlignment="Bottom" 
+                   >
 
                 <Grid Name="gridPortfolio" Margin="0,4,0,-4">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
                         <RowDefinition Height="32*" />
-                        <RowDefinition Height="331*" />
-                        <RowDefinition Height="35*" />
-                        <RowDefinition Height="35*" />
+                        <RowDefinition Height="336*" />
+                        <RowDefinition Height="33*" />
+                        <RowDefinition Height="29*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="361*"/>
-                        <ColumnDefinition Width="397*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label x:Name="labelShowPortfolioType" Content="Portfolio Type :"
-                           FontSize="14.667" HorizontalContentAlignment="Right" Margin="56,0,10,0"/>
 
-                    <ComboBox x:Name="comboBoxShowPortfolioType" FontSize="14.667" 
-                              Grid.Column="1" Margin="12,0,218,0" 
-                              VerticalContentAlignment="Center" />
-
-                    <Button x:Name="btnRefresh" Content="Refresh" Grid.Row="1" Click="RefreshGrid"
-                            Margin="7,5,29,0" Grid.ColumnSpan="2"/>
-                    <DataGrid x:Name="dataGridMyStocks" AutoGenerateColumns="False" Margin="0,10,16,0" 
-                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
-                              ColumnWidth="*" Grid.ColumnSpan="2" Grid.Row="2"
+                    <DataGrid x:Name="dataGridPortfolio" AutoGenerateColumns="False" Margin="0,10,16,0" 
+                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
+                              ColumnWidth="*" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="2"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               ScrollViewer.CanContentScroll="True" 
-                              SelectionChanged="EnableModify">
+                              SelectionChanged="EnableCompare" >
+
 
                         <DataGrid.Style>
                             <Style TargetType="DataGrid">
@@ -55,22 +58,48 @@
                         </DataGrid.Style>
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Ticker" Binding="{Binding ticker}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Purchase Date" Binding="{Binding buyDate}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Purchase Price" Binding="{Binding buyPrice}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="No of Units" Binding="{Binding units}" IsReadOnly="True"/>
+
+                            <DataGridTextColumn Header="Ticker" Binding="{Binding ticker}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Purchase Price" Binding="{Binding buyPrice}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="No of Units" Binding="{Binding units}" IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
 
                     </DataGrid>
-
-                    <Button x:Name="btnModify" Content="Modify" Grid.Row="3" Click="Modify"
-                            Margin="7,4,9,1" IsEnabled="False"/>
-
-                    <Button x:Name="btnDelete" Content="Delete" Grid.Row="3" Click="Delete"
-                            Margin="9,4,29,1" Grid.Column="1" IsEnabled="False"/>
-
-                    <Button x:Name="btnAddPortFolioTab" Content="Add Portfolio" Grid.Row="4" 
-                            Click="OpenAddUserTab" Margin="7,4,29,1" Grid.ColumnSpan="2" />
+                    <Button x:Name="btnCompare" Content="Compare" Grid.Row="2" Click="ComparePortfolio"
+                            Grid.Column="1" Margin="7,4,9,0" IsEnabled="False"/>
                     <!--Button.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -84,7 +113,7 @@
 
             </TabItem>
 
-            <TabItem Header="Portfolio Comparison" Visibility="Collapsed">
+            <TabItem x:Name="tabCompare" Header="Portfolio Comparison" Visibility="Collapsed">
                 <Grid Name="grid" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
@@ -102,16 +131,16 @@
 
 
 
-            <TabItem Header="Add / Delete Portfolio" >
+            <TabItem Header="Add Transaction" >
 
                 <Grid Name="gridAddDelete" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="354*" />
-                        <ColumnDefinition Width="403*" />
-
+                        <ColumnDefinition Width="256*" />
+                        <ColumnDefinition Width="125*" />
+                        <ColumnDefinition Width="368*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -120,56 +149,75 @@
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
+                    
+                    <Rectangle Grid.Row="0" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="6" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="8" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="10" Grid.ColumnSpan="3" Fill="AliceBlue" />
+                    <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
+                    <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
+                    <Rectangle Grid.Row="5" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
+                    <Rectangle Grid.Row="7" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
+                    <Rectangle Grid.Row="9" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
+                    
+                    <Label x:Name="labelTicker" Content="Ticker :"  VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right"  FontSize="14.667" Margin="108,0,10,0"/>
 
 
-                    <Label x:Name="labelPortfolioType" Content="Portfolio Type :"
-                           HorizontalContentAlignment="Right" Margin="141,10,41,26" FontSize="14.667"
-                           />
+                    <TextBox x:Name="txtTicker" Grid.Column="2" 
+                             HorizontalContentAlignment="Center" 
+                             VerticalContentAlignment="Center" Margin="0,10,184,10"  />
 
-                    <ComboBox x:Name="comboBoxPortfolioType" HorizontalContentAlignment="Center"
+                    <Label x:Name="labelTransationType" Content="Transaction Type :"
+                           HorizontalContentAlignment="Right" FontSize="14.667"
+                           Grid.Row="2" VerticalContentAlignment="Center"/>
+
+                    <ComboBox x:Name="comboBoxTransactionType" HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center" FontSize="14.667"
-                              Grid.Column="1" Margin="26,19,130,26"/>
-
-                    <Label x:Name="labelTicker" Content="Ticker :" Grid.Row="1"
-                           HorizontalContentAlignment="Right" Margin="141,19,41,24" FontSize="14.667"/>
+                              Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Width="136" Margin="0,10" />
 
 
-                    <TextBox x:Name="txtTicker" Grid.Row="1" Grid.Column="1" 
+                    <Label x:Name="labelStockPrice" Grid.Row="4" Content="Stock Price :"
+                           HorizontalContentAlignment="Right"  FontSize="14.667"
+                           VerticalContentAlignment="Center"/>
+
+                    <TextBox Name="txtStockPrice" Grid.Row="4" Grid.Column="2"
                              HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="26,19,130,24"/>
+                             VerticalContentAlignment="Center" Margin="0,10,184,10"/>
 
+                    <Label x:Name="labelUnits" Grid.Row="6" Content="No of Units :"
+                           HorizontalContentAlignment="Right" FontSize="14.667"
+                           VerticalContentAlignment="Center"/>
 
-                    <Label x:Name="labelBuyPrice" Grid.Row="2" Content="Purchase Price :"
-                           HorizontalContentAlignment="Right" Margin="141,19,41,24" FontSize="14.667"/>
-
-                    <TextBox Name="txtBuyPrice" Grid.Row="2" Grid.Column="1"
+                    <TextBox Name="txtNoOfUnits" Grid.Row="6" Grid.Column="2"
                              HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="26,19,130,24"/>
+                             VerticalContentAlignment="Center" Margin="0,10,184,10" />
 
-                    <Label x:Name="labelUnits" Grid.Row="3" Content="No of Units :"
-                           HorizontalContentAlignment="Right" Margin="141,19,41,20" 
-                           FontSize="14.667"/>
 
-                    <TextBox Name="txtNoOfUnits" Grid.Row="3" Grid.Column="1"
+                    <Label x:Name="labelTransactionDate" Grid.Row="8" Content="Transaction Date :"
+                           HorizontalContentAlignment="Right" FontSize="14.667"
+                           VerticalContentAlignment="Center"/>
+
+
+                    <!--<TextBox Name="txtTransactionDae" Grid.Row="8" Grid.Column="2"
                              HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="26,19,130,20"/>
-
-
-                    <Label x:Name="labelBuyDate" Grid.Row="4" Content="Purchase Date :"
-                           HorizontalContentAlignment="Right" Margin="141,19,41,19" FontSize="14.667"/>
-
-
-                    <TextBox Name="txtBuyDate" Grid.Row="4" Grid.Column="1"
+                             VerticalContentAlignment="Center" Margin="0,10,184,10"/>-->
+                    <DatePicker Name="dateTransactionDate" Grid.Row="8" Grid.Column="2" 
                              HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="26,19,130,19"/>
-                    <!--DatePicker Name="txtBuyDate" Grid.Row="5" Grid.Column="2" 
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="26,10,27,10"
-                                FontSize="14.667"/-->
+                             VerticalContentAlignment="Center" 
+                                FontSize="14.667" Margin="0,10,184,10"/>
 
-                    <Button x:Name="btnAddUser" Content="Add User" Click="AddUser" Grid.ColumnSpan="2"
-                            Grid.Row="5" Margin="141,19,130,24"/>
+                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Click="AddTransaction"
+                            Grid.Row="10" Grid.Column="1" Margin="10,5,10,10"/>
                     <!--Button x:Name="btnAddUser" Content="Add User" 
                             Click="AddUser" Margin="54,14,83,30" Grid.Row="5"
                             Grid.ColumnSpan="2"/-->
@@ -186,6 +234,7 @@
                         <ColumnDefinition Width="65*"/>
                         <ColumnDefinition Width="162*"/>
                         <ColumnDefinition Width="281*"/>
+
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="58*" />
@@ -202,7 +251,7 @@
                     <Label x:Name="labelToDate" Content="To : " Grid.Column="2"
                            HorizontalContentAlignment="Right" Margin="19,10,13,10" 
                            FontSize="14.667"/>
-                    <DatePicker Name="dateToDate" Grid.Column="3" 
+                    <DatePicker x:Name="dateToDate" Grid.Column="3" 
                              HorizontalContentAlignment="Center" 
                              VerticalContentAlignment="Center" Margin="26,10,10,10"
                                 FontSize="14.667"/>
@@ -219,12 +268,66 @@
                         </DataGrid.Style>
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Stock Id" Binding="{Binding ticker}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Units" Binding="{Binding buyDate}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Trans Date" Binding="{Binding buyPrice}" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Type" Binding="{Binding units}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Price" Binding="{Binding units}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="P/L" Binding="{Binding units}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Ticker" Binding="{Binding ticker}" IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Type" Binding="{Binding buySell}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Price" Binding="{Binding price}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Units" Binding="{Binding units}" IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Price" Binding="{Binding price}" IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
 
                         </DataGrid.Columns>
                     </DataGrid>

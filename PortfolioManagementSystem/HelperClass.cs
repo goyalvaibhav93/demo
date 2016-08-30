@@ -27,7 +27,7 @@ namespace PortfolioManagementSystem
             newStream.Write(bytes, 0, bytes.Length);
             newStream.Close();
             var response = http.GetResponse();
-
+            
             var stream = response.GetResponseStream();
             var sr = new StreamReader(stream);
             var content = sr.ReadToEnd();
