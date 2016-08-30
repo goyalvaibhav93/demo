@@ -79,11 +79,8 @@ namespace PortfolioManagementSystem
         // Load Grid when opening First Time
         private void LoadGrids(object sender, RoutedEventArgs e)
         {
-            LoadGrid<Investment>
-                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current",
-                investments, dataGridInvestments);
-            LoadGrid<Transaction>("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/all",
-                transactions, dataGridTransaction);
+            LoadInvestmentGrid();
+            LoadTransactionGrid();
         }
 
         // Load Refreshed Grid when Show Portfolio tab is Selected
@@ -128,6 +125,20 @@ namespace PortfolioManagementSystem
 
     public partial class PorfolioManagementSystemWindow
     {
+        private void LoadTransactionGrid()
+        {
+            LoadGrid<Transaction>
+                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/all",
+                transactions, dataGridTransaction);
+        }
+
+        private void LoadInvestmentGrid()
+        {
+            LoadGrid<Investment>
+                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current",
+                investments, dataGridInvestments);
+        }
+
         private void LoadGrid<T>(string uri, List<T> obj, DataGrid dataGrid)
         {
             string jsonString = helper.DownloadJsonString(uri);
@@ -160,7 +171,7 @@ namespace PortfolioManagementSystem
                 "http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/new";
             helper.PostJsonData(baseAddress, jsonString);
             ResetAddTransactionForm();
-            LoadGrid<Transaction>("http://10.87.204.218:8080/PortfolioManagementSystemWeb/rest/transactions/all", transactions, dataGridTransaction);
+            LoadTransactionGrid();
         }
 
         private void AddItemsToComboBox(ComboBox comboBox)

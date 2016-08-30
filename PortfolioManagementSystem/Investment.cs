@@ -10,8 +10,7 @@ namespace PortfolioManagementSystem
     [DataContract]
     public class Investment
     {
-        //[DataMember]
-        public Stock stock = null;
+        public enum Portfolio { Finance, Autonomous, Information}
         [DataMember]
         public string ticker { get; set; }
         [DataMember]
