@@ -186,7 +186,7 @@
                         </DataGrid.Style>
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Ticker" Binding="{Binding ticker}" IsReadOnly="True">
+                            <DataGridTextColumn Header="Ticker" Binding="{Binding ticker}"  IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -234,7 +234,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Date" Binding="{Binding }" IsReadOnly="True">
+                            <DataGridTextColumn Header="Date" Binding="{Binding transactionDate}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />

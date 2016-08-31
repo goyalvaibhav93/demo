@@ -133,6 +133,7 @@ namespace PortfolioManagementSystem
             {
                 case 0:
                     LoadInvestmentGrid("");
+                    dataGridInvestments.Columns.Remove(clmPsector);
                     break;
                 case 1:
                     LoadInvestmentGrid("/Finance");
@@ -151,10 +152,10 @@ namespace PortfolioManagementSystem
             switch (comboBoxPortfolio.SelectedIndex)
             {
                 case 0:
-                    clmPsector.Visibility = Visibility.Visible;
+                    dataGridInvestments.Columns.Insert(1, clmPsector);
                     break;
                 default:
-                    clmPsector.Visibility = Visibility.Visible;
+                    dataGridInvestments.Columns.Remove(clmPsector);
                     break;
             }
         }
@@ -183,6 +184,8 @@ namespace PortfolioManagementSystem
             comboBoxPortfolio.Items.Add(Investment.Portfolio.Automobiles);
             comboBoxPortfolio.Items.Add("Information Technology");
             comboBoxPortfolio.SelectedIndex = 0;
+
+            
         }
 
         private void LoadGrid<T>(string uri, List<T> obj, DataGrid dataGrid)
