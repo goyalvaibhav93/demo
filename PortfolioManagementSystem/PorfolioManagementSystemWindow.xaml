@@ -8,7 +8,7 @@
         Title="Porfolio Management System Window" x:Name ="porfolioManagementSystemWindow" 
         Height="{Binding SystemParameters.PrimaryScreenHeight}"  
         Width="{Binding SystemParameters.PrimaryScreenWidth}" 
-        Closing="ClosingWindow" Loaded="LoadGrids"
+        Closing="ClosingWindow" Loaded="Load"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
 
@@ -29,9 +29,9 @@
                 <Grid Name="gridInvestments" Margin="0,4,0,-4">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0" />
-                        <RowDefinition Height="405*" />
-                        <RowDefinition Height="34*" />
+                        <RowDefinition Height="29*" />
+                        <RowDefinition Height="377*" />
+                        <RowDefinition Height="33*" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -39,6 +39,9 @@
                         <ColumnDefinition Width="203*"/>
                         <ColumnDefinition Width="267*"/>
                     </Grid.ColumnDefinitions>
+
+                    <Label Content="Portfolio Type" HorizontalContentAlignment="Right" Margin="76,0,0,10" />
+                    <ComboBox x:Name="comboBoxPortfolio" Grid.Column="1" Margin="10,0,42,10" SelectionChanged="ChangePortfolio"/>
 
 
                     <DataGrid x:Name="dataGridInvestments" AutoGenerateColumns="False" 

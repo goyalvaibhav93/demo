@@ -34,6 +34,8 @@ namespace PortfolioManagementSystem
         // Object of Investment
         public static List<Investment> investments = new List<Investment>();
 
+        public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
+
         public PorfolioManagementSystemWindow()
         {
             InitializeComponent();
@@ -77,11 +79,13 @@ namespace PortfolioManagementSystem
         }
         
         // Load Grid when opening First Time
-        private void LoadGrids(object sender, RoutedEventArgs e)
+        private void Load(object sender, RoutedEventArgs e)
         {
-            LoadInvestmentGrid();
+            //LoadInvestmentGrid("");
             LoadTransactionGrid();
+            AddItemsToComboBox();
         }
+
 
         // Load Refreshed Grid when Show Portfolio tab is Selected
         private void TabSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -121,6 +125,28 @@ namespace PortfolioManagementSystem
             tabCompare.Visibility = Visibility.Visible;
         }
 
+        private void ChangePortfolio(object sender, SelectionChangedEventArgs e)
+        {
+            switch (comboBoxPortfolio.SelectedIndex)
+            {
+                case 0:
+                    LoadInvestmentGrid("");
+                    break;
+                case 1:
+                    LoadInvestmentGrid("/Finance");
+                    break;
+                case 2:
+                    LoadInvestmentGrid("/Automobiles");
+                    break;
+                case 3:
+                    LoadInvestmentGrid("/Information Technology");
+                    break;
+                default:
+                    MessageBox.Show("Please Select Right choice");
+                    break;
+                    
+            }
+        }
     }
 
     public partial class PorfolioManagementSystemWindow
@@ -128,15 +154,24 @@ namespace PortfolioManagementSystem
         private void LoadTransactionGrid()
         {
             LoadGrid<Transaction>
-                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/all",
+                (baseAddress + "transactions/all",
                 transactions, dataGridTransaction);
         }
 
-        private void LoadInvestmentGrid()
+        private void LoadInvestmentGrid(string param)
         {
             LoadGrid<Investment>
-                ("http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/investments/current",
+                (baseAddress + "investments" + param,
                 investments, dataGridInvestments);
+        }
+
+        public void AddItemsToComboBox()
+        {
+            comboBoxPortfolio.Items.Add("All");
+            comboBoxPortfolio.Items.Add(Investment.Portfolio.Finance);
+            comboBoxPortfolio.Items.Add(Investment.Portfolio.Automobiles);
+            comboBoxPortfolio.Items.Add(Investment.Portfolio.Information_Techonology);
+            comboBoxPortfolio.SelectedIndex = 0;
         }
 
         private void LoadGrid<T>(string uri, List<T> obj, DataGrid dataGrid)
@@ -167,17 +202,11 @@ namespace PortfolioManagementSystem
 
             MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
             string jsonString = helper.GenerateJsonStringFromStream(mStream);
-            string baseAddress =
-                "http://10.87.198.148:8080/PortfolioManagementSystemWeb/rest/transactions/new";
-            helper.PostJsonData(baseAddress, jsonString);
+            string posttAddress = baseAddress + "transactions/new";
+            helper.PostJsonData(posttAddress, jsonString);
             ResetAddTransactionForm();
             LoadTransactionGrid();
-        }
-
-        private void AddItemsToComboBox(ComboBox comboBox)
-        {
-            comboBox.Items.Add(Transaction.TransactionType.Buy);
-            comboBox.Items.Add(Transaction.TransactionType.Sell);
+            comboBoxPortfolio.SelectedIndex = 0;
         }
 
         private void ResetAddTransactionForm()
