@@ -34,7 +34,7 @@ namespace PortfolioManagementSystem
         // Object of Investment
         public static List<Investment> investments = new List<Investment>();
 
-        public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
+        public string baseAddress = "http://10.87.198.157:8080/PortfolioManagementSystemWeb/rest/";
 
         public PorfolioManagementSystemWindow()
         {
@@ -70,6 +70,8 @@ namespace PortfolioManagementSystem
             if(dataGridInvestments.SelectedItems.Count == 1)
             {
                 btnAnalyse.IsEnabled = true;
+                btnCompare.IsEnabled = false;
+
             }
             if(dataGridInvestments.SelectedItems.Count >= 2)
             {
@@ -146,6 +148,15 @@ namespace PortfolioManagementSystem
                     break;
                     
             }
+            switch (comboBoxPortfolio.SelectedIndex)
+            {
+                case 0:
+                    clmPsector.Visibility = Visibility.Visible;
+                    break;
+                default:
+                    clmPsector.Visibility = Visibility.Visible;
+                    break;
+            }
         }
     }
 
@@ -170,7 +181,7 @@ namespace PortfolioManagementSystem
             comboBoxPortfolio.Items.Add("All");
             comboBoxPortfolio.Items.Add(Investment.Portfolio.Finance);
             comboBoxPortfolio.Items.Add(Investment.Portfolio.Automobiles);
-            comboBoxPortfolio.Items.Add(Investment.Portfolio.Information_Techonology);
+            comboBoxPortfolio.Items.Add("Information Technology");
             comboBoxPortfolio.SelectedIndex = 0;
         }
 

@@ -11,7 +11,8 @@ namespace PortfolioManagementSystem
     public class Investment
     {
         public enum Portfolio { Finance, Automobiles, Information_Techonology}
-        public Portfolio portfolio { get; set; }
+        [DataMember]
+        public string portfolio { get; set; }
         [DataMember]
         public string ticker { get; set; }
         [DataMember]
@@ -19,10 +20,10 @@ namespace PortfolioManagementSystem
         [DataMember]
         public long buyDate { get; set; }
         [DataMember]
-        public double buyPrice { get; set; }
+        public double investmentCost { get; set; }
         [DataMember]
         public int units { get; set; }
-        //[DataMember]
+        [DataMember]
         public double pAndL { get; set; }
 
         public Investment(int investmentId, string ticker, long buyDate, double buyPrice, int units)
@@ -30,7 +31,7 @@ namespace PortfolioManagementSystem
             this.ticker = ticker;
             this.investmentId = investmentId;
             this.buyDate = buyDate;
-            this.buyPrice = buyPrice;
+            this.investmentCost = buyPrice;
             this.units = units;
         }
     }

@@ -73,7 +73,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Portfolio Sector" Binding="{Binding portfolioSector}" IsReadOnly="True" >
+                            <DataGridTextColumn x:Name="clmPsector" Header="Portfolio Sector" Binding="{Binding portfolio}" IsReadOnly="True" >
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -85,7 +85,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="No of Units" Binding="{Binding units}" IsReadOnly="True">
+                            <DataGridTextColumn x:Name="clmUnits"  Header="No of Units" Binding="{Binding units}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -97,7 +97,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Investment Cost" Binding="{Binding invesmentCost}" IsReadOnly="True">
+                            <DataGridTextColumn Header="Investment Cost" Binding="{Binding investmentCost}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -375,7 +375,7 @@
 
             </TabItem>
 
-            <TabItem x:Name="tabCompare" Header="Portfolio Comparison" Visibility="Collapsed">
+            <TabItem x:Name="tabCompare" Header="Stocks Comparison" Visibility="Collapsed">
                 <Grid Name="grid" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
