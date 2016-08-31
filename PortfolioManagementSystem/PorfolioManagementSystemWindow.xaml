@@ -8,7 +8,9 @@
         Title="Porfolio Management System Window" x:Name ="porfolioManagementSystemWindow" 
         Height="{Binding SystemParameters.PrimaryScreenHeight}"  
         Width="{Binding SystemParameters.PrimaryScreenWidth}" 
-        Closing="ClosingWindow" Loaded="Load"
+        Closing="ClosingWindow" Loaded="Load" 
+        xmlns:chartingToolkit=
+        "clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
 
@@ -40,8 +42,8 @@
                         <ColumnDefinition Width="267*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Content="Portfolio Type" HorizontalContentAlignment="Right" Margin="76,0,0,10" />
-                    <ComboBox x:Name="comboBoxPortfolio" Grid.Column="1" Margin="10,0,42,10" SelectionChanged="ChangePortfolio"/>
+                    <Label Content="Portfolio" HorizontalContentAlignment="Right" Margin="76,0,0,10" />
+                    <ComboBox x:Name="comboBoxPortfolio" HorizontalContentAlignment="Center" Grid.Column="1" Margin="10,0,42,10" SelectionChanged="ChangePortfolio"/>
 
 
                     <DataGrid x:Name="dataGridInvestments" AutoGenerateColumns="False" 
@@ -55,7 +57,7 @@
 
                         <DataGrid.Style>
                             <Style TargetType="DataGrid">
-                                <Setter Property="AlternatingRowBackground" Value="Yellow"/>
+                                <Setter Property="AlternatingRowBackground" Value="Cyan"/>
                             </Style>
                         </DataGrid.Style>
                         <DataGrid.Columns>
@@ -109,7 +111,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="P/L" Binding="{Binding pan}" IsReadOnly="True">
+                            <DataGridTextColumn Header="P/L" Binding="{Binding profit}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -124,7 +126,7 @@
                         </DataGrid.Columns>
 
                     </DataGrid>
-                    
+
                     <Button x:Name="btnNewTransaction" Content="New Transaction" Grid.Row="2" Click="OpenNewTransactionTab"
                              Margin="110,4,9,10" />
                     <Button x:Name="btnAnalyse" Content="Analyse" Grid.Row="2" Click="OpenAnalyseTab"
@@ -174,14 +176,15 @@
                     <DatePicker x:Name="dateToDate" Grid.Column="3" 
                              HorizontalContentAlignment="Center" 
                              VerticalContentAlignment="Center" Margin="4.637,10,6.939,10"/>
-                    <Button x:Name="btnShowTransaction" Content="Show Transaction" Grid.Column="4" Margin="51.061,10,93,10"/>
+                    <Button x:Name="btnShowTransaction" Content="Show Transaction" Grid.Column="4" Margin="51.061,10,93,10"
+                            Click="ShowTransactionsBetweenDates"/>
 
                     <DataGrid x:Name="dataGridTransaction" AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
                               ColumnWidth="*" Grid.ColumnSpan="5" Grid.Row="1">
                         <DataGrid.Style>
                             <Style TargetType="DataGrid">
-                                <Setter Property="AlternatingRowBackground" Value="Yellow"/>
+                                <Setter Property="AlternatingRowBackground" Value="Cyan"/>
                             </Style>
                         </DataGrid.Style>
                         <DataGrid.Columns>
@@ -234,7 +237,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Date" Binding="{Binding TransactionDate}" IsReadOnly="True">
+                            <DataGridTextColumn x:Name="clmDate"  Header="Date" Binding="{Binding TransactionDate}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -375,18 +378,18 @@
 
             </TabItem>
 
-            <TabItem x:Name="tabAnalyseStock" Header="Stocks Comparison" Visibility="Visible">
+            <TabItem x:Name="tabAnalyseStock" Header="Analyse Stock" Visibility="Visible">
                 <Grid Name="grid" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
 
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="34*" />
-                        <RowDefinition Height="171*" />
-                        <RowDefinition Height="31*" />
-                        <RowDefinition Height="204*" />
-                        <RowDefinition Height="20*" />
+                        <RowDefinition Height="33*" />
+                        <RowDefinition Height="187*" />
+                        <RowDefinition Height="33*" />
+                        <RowDefinition Height="158*" />
+                        <RowDefinition Height="29*" />
 
                     </Grid.RowDefinitions>
 
@@ -418,6 +421,56 @@
                              HorizontalContentAlignment="Center" IsReadOnly="True"  Foreground="Blue"/>
 
                     <Label x:Name="labelMarketStats" Content="Market Stats" Grid.Row="2" Grid.Column="2" Margin="10,0,8,5" Height="14" VerticalAlignment="Bottom"/>
+
+                    <chartingToolkit:Chart Name="lineChart" Title="Stock prices" Grid.Row="1" Grid.ColumnSpan="5">
+                        <chartingToolkit:LineSeries Name="lineChartClose"
+                                                    Title="Stock plotter"   DependentValuePath="Value" 
+                                                    IndependentValuePath="Key"
+                                                    ItemsSource="{Binding}"  DataContext="{Binding}"        
+                                                    IsSelectionEnabled="True"/>
+                        <!--<chartingToolkit:LineSeries Name="lnstock2" 
+                                                    Title="Second stocks"  DependentValuePath="Value" 
+                                                IndependentValuePath="Key"
+                                                ItemsSource="{Binding [1]}"
+                                        DataContext="{Binding [1]}"        
+                                        IsSelectionEnabled="True" />-->
+
+                    </chartingToolkit:Chart>
+
+                    <Grid Grid.Row="1" Grid.Column="5">
+                        <Grid.ColumnDefinitions >
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="7*"/>
+
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+
+                        </Grid.RowDefinitions>
+                        <RadioButton x:Name = "radioClose" VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center" Checked="ShowCloseGraph" Height="12" Margin="28,12,12,13" Width="12"/>
+                        <Label x:Name="labelClose" Content="Close" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <RadioButton x:Name = "radioOpen" VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center" Checked="ShowOpenGraph"
+                                     Grid.Row="1" Grid.Column="0" Height="12" Margin="28,13,12,13" Width="12"/>
+                        <Label x:Name="labelOpen" Content="Open" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <RadioButton x:Name = "radioHigh" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"
+                                     HorizontalAlignment="Center" Checked="ShowHighGraph" Height="12" Margin="28,13,12,12" Width="12"/>
+                        <Label x:Name="labelHigh" Content="High" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <RadioButton x:Name = "radioLow" VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center" Checked="ShowLowGraph"
+                                     Grid.Row="3" Grid.Column="0" Height="12" Margin="28,13,12,13" Width="12"/>
+                        <Label x:Name="labelLow" Content="Low" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <RadioButton x:Name = "radioVolume" VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0"
+                                         Checked="ShowVolumeGraph" Height="12" Margin="28,12,12,13" Width="12" />
+                        <Label x:Name="labelVolume" Content="Volume" Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                    </Grid>
+
 
                     <DataGrid x:Name="dataGridMarketStats" AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
@@ -520,7 +573,8 @@
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <Button x:Name="btnCloseAnalyseTab" Content="Close" Grid.Row="4" Grid.Column="3" Margin="10,5,8,0"/>
+                    <Button x:Name="btnCloseAnalyseTab" Content="Close" Grid.Row="4" 
+                            Grid.Column="3" Margin="10,5,8,10"/>
 
                 </Grid>
             </TabItem>

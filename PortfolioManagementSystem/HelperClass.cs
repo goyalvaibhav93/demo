@@ -12,6 +12,7 @@ namespace PortfolioManagementSystem
 {
     public class HelperClass
     {
+
         public DateTime DateTimeResolve(double timeStamp)
         {
             DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0);

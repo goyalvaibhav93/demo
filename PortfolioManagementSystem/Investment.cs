@@ -24,7 +24,7 @@ namespace PortfolioManagementSystem
         [DataMember]
         public int units { get; set; }
         [DataMember]
-        public double pAndL { get; set; }
+        public double profit { get; set; }
 
         public Investment(int investmentId, string ticker, long buyDate, double buyPrice, int units)
         {

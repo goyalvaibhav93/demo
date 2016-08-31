@@ -38,6 +38,8 @@ namespace PortfolioManagementSystem
 
         public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
 
+        static StockDetail stockDetail;
+
         public PorfolioManagementSystemWindow()
         {
             InitializeComponent();
@@ -122,16 +124,13 @@ namespace PortfolioManagementSystem
             tabCtrlPorfolioManagementSystem.SelectedIndex = 4;
             tabAnalyseStock.Visibility = Visibility.Visible;
 
-            //DateTime dtp = new DateTime(1970, 1, 1, 0, 0, 0);
-            //dtp.AddMilliseconds()
-
             LoadAnalyseTab();
         }
 
         // Compare Portfolio when Compare Button is Pressed
         private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
         {
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 4;
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
             tabCompare.Visibility = Visibility.Visible;
 
 
@@ -169,6 +168,75 @@ namespace PortfolioManagementSystem
                     break;
             }
         }
+
+        private void ShowVolumeGraph(object sender, RoutedEventArgs e)
+        {
+            List<KeyValuePair<DateTime, long>> graphPoints = new List<KeyValuePair<DateTime, long>>();
+            foreach (MarketStat marketStat in stockDetail.marketList)
+            {
+                graphPoints.Add(new KeyValuePair<DateTime, long>(marketStat.Date, marketStat.volumeTraded));
+            }
+            lineChartClose.ItemsSource = graphPoints;
+            lineChartClose.Title = "Volume Traded";
+        }
+
+        private void ShowLowGraph(object sender, RoutedEventArgs e)
+        {
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stockDetail.marketList)
+            {
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
+            }
+            lineChartClose.ItemsSource = graphPoints;
+            lineChartClose.Title = "Low Price";
+        }
+
+        private void ShowHighGraph(object sender, RoutedEventArgs e)
+        {
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stockDetail.marketList)
+            {
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
+            }
+            lineChartClose.ItemsSource = graphPoints;
+            lineChartClose.Title = "High Price";
+        }
+
+        private void ShowCloseGraph(object sender, RoutedEventArgs e)
+        {
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stockDetail.marketList)
+            {
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+            lineChartClose.ItemsSource = graphPoints;
+            lineChartClose.Title = "Close Price";
+
+        }
+
+        private void ShowOpenGraph(object sender, RoutedEventArgs e)
+        {
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stockDetail.marketList)
+            {
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
+            }
+            lineChartClose.ItemsSource = graphPoints;
+            lineChartClose.Title = "Open Price";
+        }
+
+        private void ShowTransactionsBetweenDates(object sender, RoutedEventArgs e)
+        {
+            DateTime referenceDate = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            DateTime fromDate = (DateTime)dateFromDate.SelectedDate;
+            DateTime toDate = (DateTime)dateToDate.SelectedDate;
+            MessageBox.Show((fromDate - referenceDate).TotalMilliseconds + "");
+            transactions = LoadGrid<Transaction>
+                (baseAddress + "transactions/dates?start=" +(fromDate-referenceDate).TotalMilliseconds 
+                +"&end="+(toDate-referenceDate).TotalMilliseconds);
+            dataGridTransaction.Columns.Remove(clmDate);
+            dataGridTransaction.ItemsSource = transactions;
+        }
     }
 
     public partial class PorfolioManagementSystemWindow
@@ -176,20 +244,22 @@ namespace PortfolioManagementSystem
         public void LoadAnalyseTab()
         {
             string ticker = ((Investment)dataGridInvestments.SelectedItem).ticker;
-            MessageBox.Show(ticker);
+            //MessageBox.Show(ticker);
             string jsonString = helper.DownloadJsonString(baseAddress + "stocks/analyze/" + ticker);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
 
+            
 
-            StockDetail stockDetail = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
+            stockDetail = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
             foreach(MarketStat marketStat in stockDetail.marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
             }
+
             txtAveChange.Text = stockDetail.avgChange.ToString();
             txtLiquidity.Text = stockDetail.liquidity.ToString();
             txtVolatility.Text = stockDetail.volatility.ToString();
-
+            radioClose.IsChecked = true;
             dataGridMarketStats.ItemsSource = stockDetail.marketList;
         }
         
@@ -227,7 +297,7 @@ namespace PortfolioManagementSystem
 
             List<T> obj;
             string jsonString = helper.DownloadJsonString(uri);
-            
+            MessageBox.Show(jsonString);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
             obj = helper.UnserializeListObjectFromJsonStream<T>(jsonStream);
             return obj;
