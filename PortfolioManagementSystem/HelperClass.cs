@@ -38,7 +38,7 @@ namespace PortfolioManagementSystem
             var sr = new StreamReader(stream);
             var content = sr.ReadToEnd();
 
-            MessageBox.Show("Data Posted!");
+            MessageBox.Show(content);
         }
 
         public Stream GenerateStreamFromJsonString(string s)

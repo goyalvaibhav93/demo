@@ -234,7 +234,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="Date" Binding="{Binding transactionDate}" IsReadOnly="True">
+                            <DataGridTextColumn Header="Date" Binding="{Binding TransactionDate}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />

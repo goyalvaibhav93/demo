@@ -195,16 +195,20 @@ namespace PortfolioManagementSystem
         
         private void LoadTransactionGrid()
         {
-            LoadGrid<Transaction>
-                (baseAddress + "transactions/all",
-                transactions, dataGridTransaction);
+            transactions = LoadGrid<Transaction>
+                (baseAddress + "transactions/all");
+            foreach(Transaction tr in transactions)
+            {
+                tr.TransactionDate = helper.DateTimeResolve(tr.date);
+            }
+            dataGridTransaction.ItemsSource = transactions;
         }
 
         private void LoadInvestmentGrid(string param)
         {
-            LoadGrid<Investment>
-                (baseAddress + "investments" + param,
-                investments, dataGridInvestments);
+            investments = LoadGrid<Investment>
+                (baseAddress + "investments" + param);
+            dataGridInvestments.ItemsSource = investments;
         }
 
         public void AddItemsToComboBox()
@@ -218,14 +222,15 @@ namespace PortfolioManagementSystem
             
         }
 
-        private void LoadGrid<T>(string uri, List<T> obj, DataGrid dataGrid)
+        private List<T> LoadGrid<T>(string uri)
         {
+
+            List<T> obj;
             string jsonString = helper.DownloadJsonString(uri);
             
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
             obj = helper.UnserializeListObjectFromJsonStream<T>(jsonStream);
-
-            dataGrid.ItemsSource = obj;
+            return obj;
         }
 
         private void AddTransaction()
@@ -240,12 +245,13 @@ namespace PortfolioManagementSystem
             {
                 transactionType = Transaction.TransactionType.Sell;
             }
+            DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
+
             Transaction transaction = new Transaction(txtTicker.Text, 
-                transactionType, "", 
+                transactionType, transactionDate.ToString("yyyy-MM-dd HH:mm:ss"), 
                 int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
-            DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
-            double date = double.Parse(transactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            
 
             MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
             string jsonString = helper.GenerateJsonStringFromStream(mStream);
