@@ -34,7 +34,9 @@ namespace PortfolioManagementSystem
         // Object of Investment
         public static List<Investment> investments = new List<Investment>();
 
-        public string baseAddress = "http://10.87.198.157:8080/PortfolioManagementSystemWeb/rest/";
+        List<MarketStat> marketStats = new List<MarketStat>();
+
+        public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
 
         public PorfolioManagementSystemWindow()
         {
@@ -112,12 +114,18 @@ namespace PortfolioManagementSystem
             
             tabCtrlPorfolioManagementSystem.SelectedIndex = 2;
             tabNewTransaction.Visibility = Visibility.Visible;
+
         }
 
         private void OpenAnalyseTab(object sender, RoutedEventArgs e)
         {
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 4;
             tabAnalyseStock.Visibility = Visibility.Visible;
+
+            //DateTime dtp = new DateTime(1970, 1, 1, 0, 0, 0);
+            //dtp.AddMilliseconds()
+
+            LoadAnalyseTab();
         }
 
         // Compare Portfolio when Compare Button is Pressed
@@ -125,6 +133,8 @@ namespace PortfolioManagementSystem
         {
             tabCtrlPorfolioManagementSystem.SelectedIndex = 4;
             tabCompare.Visibility = Visibility.Visible;
+
+
         }
 
         private void ChangePortfolio(object sender, SelectionChangedEventArgs e)
@@ -163,6 +173,26 @@ namespace PortfolioManagementSystem
 
     public partial class PorfolioManagementSystemWindow
     {
+        public void LoadAnalyseTab()
+        {
+            string ticker = ((Investment)dataGridInvestments.SelectedItem).ticker;
+            MessageBox.Show(ticker);
+            string jsonString = helper.DownloadJsonString(baseAddress + "stocks/analyze/" + ticker);
+            Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
+
+
+            StockDetail stockDetail = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
+            foreach(MarketStat marketStat in stockDetail.marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+            }
+            txtAveChange.Text = stockDetail.avgChange.ToString();
+            txtLiquidity.Text = stockDetail.liquidity.ToString();
+            txtVolatility.Text = stockDetail.volatility.ToString();
+
+            dataGridMarketStats.ItemsSource = stockDetail.marketList;
+        }
+        
         private void LoadTransactionGrid()
         {
             LoadGrid<Transaction>
@@ -214,11 +244,15 @@ namespace PortfolioManagementSystem
                 transactionType, "", 
                 int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
+            DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
+            double date = double.Parse(transactionDate.ToString("yyyy-MM-dd HH:mm:ss"));
+
             MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
             string jsonString = helper.GenerateJsonStringFromStream(mStream);
             string posttAddress = baseAddress + "transactions/new";
             helper.PostJsonData(posttAddress, jsonString);
             ResetAddTransactionForm();
+            LoadInvestmentGrid("");
             LoadTransactionGrid();
             comboBoxPortfolio.SelectedIndex = 0;
         }

@@ -12,6 +12,12 @@ namespace PortfolioManagementSystem
 {
     public class HelperClass
     {
+        public DateTime DateTimeResolve(double timeStamp)
+        {
+            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return(date.AddMilliseconds(timeStamp).ToLocalTime());
+        }
+
         public void PostJsonData(string baseAddress, string jsonString)
         {
             var http = (HttpWebRequest)WebRequest.Create(new Uri(baseAddress));

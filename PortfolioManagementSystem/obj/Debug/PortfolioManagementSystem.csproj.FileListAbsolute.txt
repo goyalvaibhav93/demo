@@ -16,3 +16,7 @@ C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.pdb
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PorfolioManagementSystemWindow.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\PorfolioManagementSystemWindow.baml
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.dll
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\bin\Debug\WPFToolkit.dll
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.pdb
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\bin\Debug\WPFToolkit.pdb

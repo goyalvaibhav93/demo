@@ -18,8 +18,10 @@ namespace PortfolioManagementSystem
         public TransactionType buySell { get; set; }
         [DataMember]
         public string ticker { get; set; }
-        //[DataMember]
-        public string transactionDate { get; set; }
+        [DataMember]
+        public double date { get; set; }
+        [DataMember]
+        public string dateTime { get; set; }
         [DataMember]
         public double price { get; set; }
         [DataMember]
@@ -30,7 +32,7 @@ namespace PortfolioManagementSystem
         {
             this.ticker = ticker;
             this.buySell = transactionType;
-            this.transactionDate = transactionDate;
+            //this.date = transactionDate;
             this.price = stockPrice;
             this.units = units;
 
