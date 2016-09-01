@@ -26,6 +26,8 @@ namespace PortfolioManagementSystem
         [DataMember]
         public double profit { get; set; }
 
+        public string color;
+
         public Investment(int investmentId, string ticker, long buyDate, double buyPrice, int units)
         {
             this.ticker = ticker;

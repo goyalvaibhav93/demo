@@ -63,6 +63,23 @@
                                 <Setter Property="AlternatingRowBackground" Value="Cyan"/>
                             </Style>
                         </DataGrid.Style>
+                        <!--<DataGrid.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding color}" Value="LOSS">
+                                        <Setter Property="Background" Value="Black"/>
+                                        <Setter Property="Foreground" Value="Tomato"/>
+                                        <Setter Property="FontWeight" Value="ExtraBold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding color}" Value="PROFIT">
+                                        <Setter Property="Background" Value="Black"/>
+                                        <Setter Property="Foreground" Value="LawnGreen"/>
+                                        <Setter Property="FontWeight" Value="ExtraBold"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>-->
                         <DataGrid.Columns>
 
 
@@ -265,7 +282,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            
+
 
                         </DataGrid.Columns>
                     </DataGrid>
@@ -275,106 +292,40 @@
             </TabItem>
 
 
-            <TabItem x:Name="tabNewTransaction" Header="New Transaction" Visibility="Collapsed">
+            <TabItem x:Name="tabNewTransaction" Header="New Transaction" Visibility="Visible">
 
-                <Grid Name="gridAddDelete" Margin="0,4,1,-4" 
+                <Canvas Name="gridAddDelete" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="256*" />
-                        <ColumnDefinition Width="125*" />
-                        <ColumnDefinition Width="368*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-
-                    <Rectangle Grid.Row="0" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="4" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="6" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="8" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="10" Grid.ColumnSpan="3" Fill="AliceBlue" />
-                    <Rectangle Grid.Row="1" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
-                    <Rectangle Grid.Row="3" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
-                    <Rectangle Grid.Row="5" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
-                    <Rectangle Grid.Row="7" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
-                    <Rectangle Grid.Row="9" Grid.ColumnSpan="3" Fill="AntiqueWhite" />
-
-                    <Label x:Name="labelTicker" Content="Ticker :"  VerticalContentAlignment="Center"
-                           HorizontalContentAlignment="Right"  FontSize="14.667" Margin="108,0,10,0"/>
+                    <Label  x:Name="labelTicker" Content="Ticker :"  VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right"  Canvas.Left="252" Canvas.Top="47" Height="34" Width="122"
+                             />
+                    <TextBox x:Name="txtTicker" Height="24" Canvas.Left="399" TextWrapping="Wrap"  
+                             Canvas.Top="53" Width="140"/>
+                    <Label x:Name="labelTransationType" Content="Transaction Type :" Canvas.Left="253"
+                           Canvas.Top="109" Width="122" Height="30" HorizontalContentAlignment="Right"/>
+                    <RadioButton x:Name="radioButtonBuy" Content="Buy" Canvas.Left="399" Canvas.Top="115"/>
+                    <RadioButton x:Name="radioButtonSell" Content="Sell" Canvas.Left="454" Canvas.Top="117"
+                                 RenderTransformOrigin="-0.588,0.688"/>
+                    <Label x:Name="labelStockPrice" Content="Stock Price :" Canvas.Left="276" Canvas.Top="165"
+                           Width="98" HorizontalContentAlignment="Right"/>
+                    <TextBox x:Name="txtStockPrice" Height="26" Canvas.Left="399" 
+                             TextWrapping="Wrap" Canvas.Top="165" Width="140"/>
+                    <Label x:Name="labelUnits" Content="No of Units :" Canvas.Left="276" Canvas.Top="230" 
+                           HorizontalContentAlignment="Right"  Width="98"/>
+                    <TextBox x:Name="txtNoOfUnits" Height="26" Canvas.Left="399" TextWrapping="Wrap" 
+                             Canvas.Top="230" Width="140" RenderTransformOrigin="0.486,0.346"/>
+                    <Label x:Name="labelTransactionDate" Content="Transaction Date :" Canvas.Left="266" 
+                           Canvas.Top="300" Width="108" HorizontalContentAlignment="Right"/>
+                    <DatePicker  x:Name="dateTransactionDate" Canvas.Left="399" Canvas.Top="302" Width="97"/>
+                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="286" 
+                            Canvas.Top="371" Width="105" Click="AddTransaction" />
+                    <Button x:Name="btnCancel" Content="Cancel" Canvas.Left="437" Canvas.Top="371" Width="75" Click="btnCancel_Click"/>
 
 
-                    <TextBox x:Name="txtTicker" Grid.Column="2" 
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="0,10,184,10"  />
 
-                    <Label x:Name="labelTransationType" Content="Transaction Type :"
-                           HorizontalContentAlignment="Right" FontSize="14.667"
-                           Grid.Row="2" VerticalContentAlignment="Center"/>
-
-                    <StackPanel x:Name="stackPanelTransactionType" Grid.Column="2" Grid.Row="2" Orientation="Horizontal">
-                        <Label x:Name="labelBuy" Content="Buy" Width="40" FontSize="14.667" HorizontalContentAlignment="Right"
-                               VerticalContentAlignment="Center" VerticalAlignment="Center"/>
-                        <RadioButton x:Name="radioButtonBuy" Height="33" VerticalAlignment="Bottom" Width="14"/>
-                        <Label x:Name="labelSell" Content="Sell" Width="40" FontSize="14.667" HorizontalContentAlignment="Right"
-                               VerticalContentAlignment="Center"/>
-                        <RadioButton x:Name="radioButtonSell" Width="15" Margin="0,3,0,0" VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <!--<ComboBox x:Name="comboBoxTransactionType" HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center" FontSize="14.667"
-                              Grid.Column="2" Grid.Row="2" HorizontalAlignment="Left" Width="136" Margin="0,10" />-->
-
-
-                    <Label x:Name="labelStockPrice" Grid.Row="4" Content="Stock Price :"
-                           HorizontalContentAlignment="Right"  FontSize="14.667"
-                           VerticalContentAlignment="Center"/>
-
-                    <TextBox Name="txtStockPrice" Grid.Row="4" Grid.Column="2"
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="0,10,184,10"/>
-
-                    <Label x:Name="labelUnits" Grid.Row="6" Content="No of Units :"
-                           HorizontalContentAlignment="Right" FontSize="14.667"
-                           VerticalContentAlignment="Center"/>
-
-                    <TextBox Name="txtNoOfUnits" Grid.Row="6" Grid.Column="2"
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="0,10,184,10" />
-
-
-                    <Label x:Name="labelTransactionDate" Grid.Row="8" Content="Transaction Date :"
-                           HorizontalContentAlignment="Right" FontSize="14.667"
-                           VerticalContentAlignment="Center"/>
-
-
-                    <!--<TextBox Name="txtTransactionDae" Grid.Row="8" Grid.Column="2"
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" Margin="0,10,184,10"/>-->
-                    <DatePicker x:Name="dateTransactionDate" Grid.Row="8" Grid.Column="2" 
-                             HorizontalContentAlignment="Center" 
-                             VerticalContentAlignment="Center" 
-                                FontSize="14.667" Margin="0,10,184,10"/>
-
-                    <Button x:Name="btnAddTransaction" Content="Add Transaction" Click="AddTransaction"
-                            Grid.Row="10" Grid.Column="1" Margin="10,5,10,10"/>
-                    <!--Button x:Name="btnAddUser" Content="Add User" 
-                            Click="AddUser" Margin="54,14,83,30" Grid.Row="5"
-                            Grid.ColumnSpan="2"/-->
-                </Grid>
+                </Canvas>
             </TabItem>
 
 
@@ -509,7 +460,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            
+
                         </DataGrid.Columns>
                     </DataGrid>
 
@@ -559,7 +510,8 @@
                     <TextBox x:Name="txtLiquidityAnalyse" Grid.Column="5" Margin="8,10,20,10" 
                              HorizontalContentAlignment="Center" IsReadOnly="True"  Foreground="Blue"/>
 
-                    <Label x:Name="labelMarketStatsAnalyse" Content="Market Stats" Grid.Row="2" Grid.Column="2" Margin="10,0,8,5" Height="14" VerticalAlignment="Bottom"/>
+                    <Label x:Name="labelMarketStatsAnalyse" Content="Market Stats" Grid.Row="2" Grid.Column="2" 
+                           Margin="10,0,8,5" Height="14" VerticalAlignment="Bottom"/>
 
                     <chartingToolkit:Chart Name="lineChartAnalyse" Title="Stock prices" Grid.Row="1" Grid.ColumnSpan="5">
                         <!--<chartingToolkit:Chart.Axes>
@@ -610,7 +562,13 @@
                         <Label x:Name="labelLowAnalyse" Content="Low" Grid.Row="3" Grid.Column="1" 
                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
                                />
-                        
+                        <RadioButton x:Name = "radioVolumeAnalyse" VerticalAlignment="Center" 
+                                     HorizontalAlignment="Center" Checked="ShowVolumeGraph"
+                                     Grid.Row="4" Grid.Column="0" Height="15" Margin="28,12,12,10" Width="12"/>
+                        <Label x:Name="label" Content="Volume" Grid.Row="4" Grid.Column="1" 
+                               HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                               />
+
                     </Grid>
 
 
@@ -625,19 +583,7 @@
                         </DataGrid.Style>
                         <DataGrid.Columns>
 
-                            <DataGridTextColumn Header="Id" Binding="{Binding id}"  IsReadOnly="True">
-                                <DataGridTextColumn.HeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.HeaderStyle>
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" >
+                            <DataGridTextColumn Header="Date" Binding="{Binding dateString}" IsReadOnly="True" >
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -738,20 +684,20 @@
                         <ColumnDefinition Width="343*"/>
                     </Grid.ColumnDefinitions>
 
-                    <chartingToolkit:Chart Name="lineChartComparePortfolioBar" Title="Portfolio Comparison" Grid.Row="1" Grid.Column="0">
+                    <chartingToolkit:Chart Name="lineChartComparePortfolioBar" Title="Net Gain/Loss %" Grid.Row="1" Grid.Column="0">
                         <chartingToolkit:Chart.Axes>
                             <chartingToolkit:LinearAxis Name="barChartPortfolioY" Orientation="Y" Minimum="0" Maximum="100"/>
                         </chartingToolkit:Chart.Axes>
                         <chartingToolkit:ColumnSeries Name="barChartPortfolio"  DependentValuePath="Value" 
-                                                      IndependentValuePath="Key" Title="Profit/Loss"
+                                                      IndependentValuePath="Key" Title="Gain/Loss"
                                                       ItemsSource="{Binding}" DataContext="{Binding}"/>
                     </chartingToolkit:Chart>
 
-                    <chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="PortfolioComparison" Grid.Row="1" Grid.Column="2">
+                    <!--<chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="PortfolioComparison" Grid.Row="1" Grid.Column="2">
                         <chartingToolkit:PieSeries Name="pi" DependentValuePath="Value" IndependentValuePath="Key" 
                                                       ItemsSource="{Binding}" DataContext="{Binding}" Margin="10,0,10,10"/>
 
-                    </chartingToolkit:Chart>
+                    </chartingToolkit:Chart>-->
 
 
                 </Grid>

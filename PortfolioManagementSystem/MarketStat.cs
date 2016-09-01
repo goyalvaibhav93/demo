@@ -26,6 +26,7 @@ namespace PortfolioManagementSystem
         public long volumeTraded { get; set; }
 
         public DateTime Date { get; set; }
+        public string dateString { get; set; }
 
 
         public MarketStat()

@@ -26,11 +26,13 @@ namespace PortfolioManagementSystem
         // Object of helper class
         HelperClass helper = new HelperClass();
 
+        string ticker;
+
         // Object of Transactions
         List<Transaction> transactions = new List<Transaction>();
         
         // Object of Stocks
-        static List<Stock> stocks = new List<Stock>();
+        List<Stock> stocks = new List<Stock>();
 
         // Object of Investment
         public static List<Investment> investments = new List<Investment>();
@@ -218,7 +220,7 @@ namespace PortfolioManagementSystem
             }
             lineChartShowAnalyse.ItemsSource = graphPoints;
             lineChartShowAnalyse.Title = "Close Price";
-
+            lineChartCompare.Title = ticker;
         }
 
         private void ShowOpenGraph(object sender, RoutedEventArgs e)
@@ -243,7 +245,9 @@ namespace PortfolioManagementSystem
                 +"&end="+(toDate-referenceDate).TotalMilliseconds);
             foreach (Transaction tr in transactions)
             {
+                
                 tr.TransactionDate = helper.DateTimeResolve(tr.date);
+                tr.Date = tr.TransactionDate.ToShortDateString();
             }
             dataGridTransaction.ItemsSource = transactions;
         }
@@ -419,22 +423,19 @@ namespace PortfolioManagementSystem
 
         private void ShowCompareVolumeGraph(object sender, RoutedEventArgs e)
         {
-            double min = 5000000, max = 5;
+            long max = 500000;
             //MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                if (max < marketStat.volumeTraded)
+                //marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                //MessageBox.Show(marketStat.volumeTraded + "" + marketStat.Date);
+                if(marketStat.volumeTraded > max)
                 {
                     max = marketStat.volumeTraded;
                 }
-                if (min > marketStat.volumeTraded)
-                {
-                    min = marketStat.volumeTraded;
-                }
-                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.volumeTraded));
             }
             lineChart2.ItemsSource = graphPoints;
             lineChart2.Title = tickers[1];
@@ -443,18 +444,16 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                if (max < marketStat.volumeTraded)
+                //MessageBox.Show(marketStat.volumeTraded + "" + marketStat.Date);
+                if (marketStat.volumeTraded > max)
                 {
                     max = marketStat.volumeTraded;
                 }
-                if (min > marketStat.volumeTraded)
-                {
-                    min = marketStat.volumeTraded;
-                }
-                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.volumeTraded));
             }
-            lineChartCompareY.Minimum = (min-1000 > 0)? min - 1000:0;
-            lineChartCompareY.Maximum = max + 1000;
+            lineChartCompareY.Minimum = 0;
+            lineChartCompareY.Maximum = max+1000;
+            //MessageBox.Show(min + " " + max);
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
         }
@@ -497,6 +496,12 @@ namespace PortfolioManagementSystem
         {
             tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
         }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            ResetAddTransactionForm();
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+        }
     }
 
 
@@ -509,12 +514,15 @@ namespace PortfolioManagementSystem
             Stream stream = helper.GenerateStreamFromJsonString(jsonString);
             list = helper.UnserializeListObjectFromJsonStream<double>(stream);
 
+            list[1] *= 100;
+            list[3] *= 100;
+            list[5] *= 100;
             List<KeyValuePair<string, double>> graphPoints = new List<KeyValuePair<string, double>>();
             graphPoints.Add(new KeyValuePair<string, double>("Automobiles", list[3]));
             graphPoints.Add(new KeyValuePair<string, double>("Finance", list[1]));
             graphPoints.Add(new KeyValuePair<string, double>("Information Technology", list[5]));
 
-            double min = -5, max = 5;
+            double min = -5, max = 50;
 
             min = (min < Minimum(list[1], list[3], list[5]))? min:  Minimum(list[1], list[3], list[5]) -5;
             max = (max > Maximum(list[1], list[3], list[5]))? max:  Maximum(list[1], list[3], list[5]) +5;
@@ -550,21 +558,25 @@ namespace PortfolioManagementSystem
 
         public void LoadAnalyseTab()
         {
-            string ticker = ((Investment)dataGridInvestments.SelectedItem).ticker;
+            ticker = ((Investment)dataGridInvestments.SelectedItem).ticker;
             //MessageBox.Show(ticker);
+            lineChartAnalyse.Title = ticker;
             string jsonString = helper.DownloadJsonString(baseAddress + "stocks/analyze/" + ticker);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
 
             stockDetailAnalyse = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
+            int i = 0;
             foreach(MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                marketStat.dateString = marketStat.Date.ToShortDateString();
             }
 
             txtAveChangeAnalyse.Text = stockDetailAnalyse.avgChange.ToString();
             txtLiquidityAnalyse.Text = stockDetailAnalyse.liquidity.ToString();
             txtVolatilityAnalyse.Text = stockDetailAnalyse.volatility.ToString();
             radioCloseAnalyse.IsChecked = true;
+            
             dataGridMarketStatsAnalyse.ItemsSource = stockDetailAnalyse.marketList;
         }
         
@@ -585,6 +597,18 @@ namespace PortfolioManagementSystem
         {
             investments = LoadGrid<Investment>
                 (baseAddress + "investments" + param);
+            foreach(Investment investment in investments)
+            {
+                if(investment.profit < 0)
+                {
+                    investment.color = "LOSS";
+                }
+                else
+                {
+                    investment.color = "PROFIT";
+                }
+            }
+            //MessageBox.Show(investments[0].color+"");
             dataGridInvestments.ItemsSource = investments;
         }
 
