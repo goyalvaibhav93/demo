@@ -42,27 +42,34 @@ namespace PortfolioManagementSystem
                 transactionType = Transaction.TransactionType.Sell;
             }
             DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
-
-            Transaction transaction = new Transaction(txtTicker.Text,
+            int n;
+            double m;
+            int result = DateTime.Compare(transactionDate, DateTime.Now);
+            if(result <= 0 && int.TryParse(txtNoOfUnits.Text, out n) && n>0 && double.TryParse(txtStockPrice.Text, out m) &&
+                (radioButtonBuy.IsChecked == true || radioButtonSell.IsChecked== true))
+            {
+                Transaction transaction = new Transaction(txtTicker.Text,
                 transactionType, transactionDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
-            ConfirmAddTransaction confirm = new ConfirmAddTransaction(txtTicker.Text,
-                transactionType, int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);
-            bool? result = confirm.ShowDialog();
-            if (result == true)
-            {
+                ConfirmAddTransaction confirm = new ConfirmAddTransaction(txtTicker.Text,
+                    transactionType, int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);
+                bool? result1 = confirm.ShowDialog();
+                if (result1 == true)
+                {
 
-                MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
-                string jsonString = helper.GenerateJsonStringFromStream(mStream);
-                string posttAddress = baseAddress + "transactions/new";
-                helper.PostJsonData(posttAddress, jsonString);
-                ResetAddTransactionForm();
-                DialogResult = true;
-                this.Close();
+                    MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
+                    string jsonString = helper.GenerateJsonStringFromStream(mStream);
+                    string posttAddress = baseAddress + "transactions/new";
+                    helper.PostJsonData(posttAddress, jsonString);
+                    ResetAddTransactionForm();
+                    DialogResult = true;
+                    this.Close();
+                }
             }
             else
             {
+                MessageBox.Show("Enter Correct Values!");
                 ResetAddTransactionForm();
 
             }
