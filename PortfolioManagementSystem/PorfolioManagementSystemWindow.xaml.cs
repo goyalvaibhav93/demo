@@ -37,7 +37,7 @@ namespace PortfolioManagementSystem
 
         List<MarketStat> marketStats = new List<MarketStat>();
 
-        public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
+        public string baseAddress = "http://10.87.231.175:8080/PortfolioManagementSystemWeb/rest/";
 
         StockDetail stockDetailAnalyse;
         List<StockDetail> stocksDetailCompare;
@@ -73,15 +73,18 @@ namespace PortfolioManagementSystem
             {
                 btnAnalyse.IsEnabled = false;
                 btnCompare.IsEnabled = false;
+                btnShowTransactionTicker.IsEnabled = false;
             }
             if(dataGridInvestments.SelectedItems.Count == 1)
             {
-                btnAnalyse.IsEnabled = true;
+                btnShowTransactionTicker.IsEnabled = true;
+               btnAnalyse.IsEnabled = true;
                 btnCompare.IsEnabled = false;
 
             }
             if(dataGridInvestments.SelectedItems.Count >= 2)
             {
+                btnShowTransactionTicker.IsEnabled = false;
                 btnAnalyse.IsEnabled = false;
                 btnCompare.IsEnabled = true;
             }
@@ -131,7 +134,7 @@ namespace PortfolioManagementSystem
         }
 
         // Compare Portfolio when Compare Button is Pressed
-        private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
+        private void OpenCompareStockTab(object sender, RoutedEventArgs e)
         {
             tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
             tabCompare.Visibility = Visibility.Visible;
@@ -245,21 +248,8 @@ namespace PortfolioManagementSystem
 
         private void ShowCompareCloseGraph(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(tickers[0]+ stocksDetailCompare[0].volatility);
-            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             
-            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
-            {
-
-                marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                MessageBox.Show(marketStat.Date.ToShortDateString());
-                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
-            }
-
-            lineChart1.ItemsSource = graphPoints;
-            lineChart1.Title = tickers[0];
-
-            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
@@ -267,25 +257,144 @@ namespace PortfolioManagementSystem
             }
             lineChart2.ItemsSource = graphPoints;
             lineChart2.Title = tickers[1];
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
+
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
 
         }
 
         private void ShowCompareOpenGraph(object sender, RoutedEventArgs e)
         {
+            
+           
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
+            }
+            lineChart2.ItemsSource = graphPoints;
+            lineChart2.Title = tickers[1];
 
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
+
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareHighGraph(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
+            }
+            lineChart2.ItemsSource = graphPoints;
+            lineChart2.Title = tickers[1];
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
 
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareLowGraph(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
+            }
+            lineChart2.ItemsSource = graphPoints;
+            lineChart2.Title = tickers[1];
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
 
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareVolumeGraph(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+            lineChart2.ItemsSource = graphPoints;
+            lineChart2.Title = tickers[1];
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
+
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                //
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
+        }
+
+        private void ShowTransactionTicker(object sender, RoutedEventArgs e)
+        {
+            Investment investment = (Investment)dataGridInvestments.SelectedItem;
+            txtTickerName.Text = investment.ticker;
+            transactions = LoadGrid<Transaction>
+               (baseAddress + "transactions/"+investment.ticker);
+            foreach (Transaction tr in transactions)
+            {
+                tr.TransactionDate = helper.DateTimeResolve(tr.date);
+            }
+            
+            dataGridTransaction.Columns.Remove(clmTicker);
+            dataGridTransaction.ItemsSource = transactions;
+            btnShowAllTransaction.IsEnabled = true;
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 1;
+        }
+
+        
+        private void ShowAllTransaction(object sender, RoutedEventArgs e)
+        {
+            btnShowAllTransaction.IsEnabled = false;
+            LoadTransactionGrid();
+            dataGridTransaction.Columns.Insert(0, clmTicker);
+        }
+
+        private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
         {
 
         }
@@ -332,6 +441,7 @@ namespace PortfolioManagementSystem
         
         private void LoadTransactionGrid()
         {
+            txtTickerName.Text = "All";
             transactions = LoadGrid<Transaction>
                 (baseAddress + "transactions/all");
             foreach(Transaction tr in transactions)
