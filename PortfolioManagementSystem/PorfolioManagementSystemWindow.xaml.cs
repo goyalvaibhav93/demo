@@ -634,6 +634,7 @@ namespace PortfolioManagementSystem
 
         private void LoadInvestmentGrid(string param)
         {
+            List<KeyValuePair<string, double>> stockInvestmentPie = new List<KeyValuePair<string, double>>();
             investments = LoadGrid<Investment>
                 (baseAddress + "investments" + param);
             foreach(Investment investment in investments)
@@ -646,10 +647,12 @@ namespace PortfolioManagementSystem
                 {
                     investment.color = "PROFIT";
                 }
-
+                stockInvestmentPie.Add(new KeyValuePair<string, double>(investment.ticker, investment.investmentCost));
                 investment.profitString = investment.profit.ToString("F2", CultureInfo.InvariantCulture) +"%";
             }
             //MessageBox.Show(investments[0].color+"");
+
+            piChartStocks.ItemsSource = stockInvestmentPie;
             dataGridInvestments.ItemsSource = investments;
         }
 
@@ -687,6 +690,7 @@ namespace PortfolioManagementSystem
             {
                 transactionType = Transaction.TransactionType.Sell;
             }
+            dateTransactionDate.SelectedDate = DateTime.Now;
             DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
 
             Transaction transaction = new Transaction(txtTicker.Text, 
@@ -721,7 +725,7 @@ namespace PortfolioManagementSystem
             txtNoOfUnits.Text = "";
             txtStockPrice.Text = "";
             txtTicker.Text = "";
-            dateTransactionDate.SelectedDate = null;
+            dateTransactionDate.SelectedDate = DateTime.Now;
         }
 
         public double Minimum(double a, double b, double c)

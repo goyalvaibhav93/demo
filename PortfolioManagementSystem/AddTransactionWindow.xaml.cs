@@ -41,6 +41,7 @@ namespace PortfolioManagementSystem
             {
                 transactionType = Transaction.TransactionType.Sell;
             }
+            
             DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
             int n;
             double m;

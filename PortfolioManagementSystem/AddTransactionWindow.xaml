@@ -4,33 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PortfolioManagementSystem"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="AddTransactionWindow" Height="414" Width="506">
     <Canvas Name="gridAddDelete" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
         <Label  x:Name="labelTicker" Content="Ticker :"  VerticalContentAlignment="Center"
-    		HorizontalContentAlignment="Right" Height="34" Width="122" Canvas.Left="108" Canvas.Top="15"
+    		HorizontalContentAlignment="Right" Height="34" Width="122" Canvas.Left="94" Canvas.Top="15"
                              />
-        <TextBox x:Name="txtTicker" Height="24" Canvas.Left="255" TextWrapping="Wrap" Width="140" Canvas.Top="21"/>
+        <TextBox x:Name="txtTicker" Height="24" Canvas.Left="241" TextWrapping="Wrap" Width="140" Canvas.Top="21"/>
         <Label x:Name="labelTransationType" Content="Transaction Type :"
-    		Canvas.Top="77" Width="122" Height="30" HorizontalContentAlignment="Right" Canvas.Left="109"/>
-        <RadioButton x:Name="radioButtonBuy" Content="Buy" Canvas.Left="255" Canvas.Top="83"/>
-        <RadioButton x:Name="radioButtonSell" Content="Sell" Canvas.Left="310" Canvas.Top="85"
+    		Canvas.Top="77" Width="122" Height="30" HorizontalContentAlignment="Right" Canvas.Left="95"/>
+        <RadioButton x:Name="radioButtonBuy" Content="Buy" Canvas.Left="241" Canvas.Top="83"/>
+        <RadioButton x:Name="radioButtonSell" Content="Sell" Canvas.Left="296" Canvas.Top="85"
     		RenderTransformOrigin="-0.588,0.688"/>
-        <Label x:Name="labelStockPrice" Content="Stock Price :" Canvas.Left="132" Canvas.Top="133"
+        <Label x:Name="labelStockPrice" Content="Stock Price :" Canvas.Left="118" Canvas.Top="133"
     		Width="98" HorizontalContentAlignment="Right"/>
-        <TextBox x:Name="txtStockPrice" Height="26" Canvas.Left="255" 
+        <TextBox x:Name="txtStockPrice" Height="26" Canvas.Left="241" 
     		TextWrapping="Wrap" Canvas.Top="133" Width="140"/>
-        <Label x:Name="labelUnits" Content="No of Units :" Canvas.Left="132" Canvas.Top="198" 
+        <Label x:Name="labelUnits" Content="No of Units :" Canvas.Left="118" Canvas.Top="198" 
     		HorizontalContentAlignment="Right"  Width="98"/>
-        <TextBox x:Name="txtNoOfUnits" Height="26" Canvas.Left="255" TextWrapping="Wrap" 
+        <TextBox x:Name="txtNoOfUnits" Height="26" Canvas.Left="241" TextWrapping="Wrap" 
     		Canvas.Top="198" Width="140" RenderTransformOrigin="0.486,0.346"/>
-        <Label x:Name="labelTransactionDate" Content="Transaction Date :" Canvas.Left="122" 
+        <Label x:Name="labelTransactionDate" Content="Transaction Date :" Canvas.Left="108" 
     		Canvas.Top="268" Width="108" HorizontalContentAlignment="Right"/>
-        <DatePicker  x:Name="dateTransactionDate" Canvas.Left="255" Canvas.Top="270" Width="103"/>
-        <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="162" 
+        <DatePicker  x:Name="dateTransactionDate" SelectedDate="{x:Static sys:DateTime.Now}"
+                     Canvas.Left="241" Canvas.Top="270" Width="103"/>
+        <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="148" 
     		Canvas.Top="339" Width="105" Click="AddTransaction" />
-        <Button x:Name="btnCancel" Content="Cancel" Canvas.Left="287" Canvas.Top="339" Width="75" Click="Cancel"/>
+        <Button x:Name="btnCancel" Content="Cancel" Canvas.Left="273" Canvas.Top="339" Width="75" Click="Cancel"/>
     </Canvas>
 </Window>

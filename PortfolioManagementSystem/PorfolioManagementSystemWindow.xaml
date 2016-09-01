@@ -9,6 +9,7 @@
         Height="{Binding SystemParameters.PrimaryScreenHeight}"  
         Width="{Binding SystemParameters.PrimaryScreenWidth}" 
         Closing="ClosingWindow" Loaded="Load" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:chartingToolkit=
         "clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
@@ -21,8 +22,8 @@
         </Grid.RowDefinitions>
 
         <TextBox x:Name="txtUserName" Text="Portfolio Management System" IsReadOnly="True" 
-                 Margin="10,0,10,2" FontSize="16" FontFamily="Source Sans Pro Black"
-                 Foreground="Brown" HorizontalContentAlignment="Center"/>
+                 Margin="10,0,10,2" FontSize="20" FontFamily="Source Sans Pro Black"
+                 Foreground="Black" HorizontalContentAlignment="Center"/>
 
         <TabControl x:Name="tabCtrlPorfolioManagementSystem" Grid.Row="1"
                    SelectionChanged="TabSelectionChanged" Margin="1,0,-1,0" >
@@ -31,10 +32,11 @@
                 <Grid Name="gridInvestments" Margin="0,4,0,-4">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="29*" />
-                        <RowDefinition Height="377*" />
-                        <RowDefinition Height="33*" />
-                        <RowDefinition />
+                        <RowDefinition Height="27*" />
+                        <RowDefinition Height="189*" />
+                        <RowDefinition Height="192*" />
+                        <RowDefinition Height="32*" />
+                        <RowDefinition Height="0*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -58,28 +60,29 @@
                               SelectionChanged="EnableButtons"  >
 
 
-                        <DataGrid.Style>
+                        <!--<DataGrid.Style>
                             <Style TargetType="DataGrid">
                                 <Setter Property="AlternatingRowBackground" Value="Cyan"/>
                             </Style>
-                        </DataGrid.Style>
-                        <!--<DataGrid.CellStyle>
+                        </DataGrid.Style>-->
+                        <DataGrid.CellStyle>
                             <Style TargetType="{x:Type DataGridCell}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding color}" Value="LOSS">
-                                        <Setter Property="Background" Value="Black"/>
-                                        <Setter Property="Foreground" Value="Tomato"/>
-                                        <Setter Property="FontWeight" Value="ExtraBold"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Setter Property="Foreground" Value="Red"/>
+
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding color}" Value="PROFIT">
-                                        <Setter Property="Background" Value="Black"/>
-                                        <Setter Property="Foreground" Value="LawnGreen"/>
-                                        <Setter Property="FontWeight" Value="ExtraBold"/>
+                                        <Setter Property="Foreground" Value="Green"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+
+
                                     </DataTrigger>
 
                                 </Style.Triggers>
                             </Style>
-                        </DataGrid.CellStyle>-->
+                        </DataGrid.CellStyle>
                         <DataGrid.Columns>
 
 
@@ -147,16 +150,23 @@
 
                     </DataGrid>
 
-                    <Button x:Name="btnNewTransaction" Content="New Transaction" Grid.Row="2" Click="OpenNewTransactionTab"
-                             Margin="76,4,8.5,10" />
-                    <Button x:Name="btnAnalyse" Content="Analyse" Grid.Row="2" Click="OpenAnalyseTab"
-                            Grid.Column="1" Margin="42.5,4,24,10" IsEnabled="False"/>
-                    <Button x:Name="btnShowTransactionTicker" Content="Show Transaction"  Grid.Row="2" Grid.Column="2"
-                            Click="ShowTransactionTicker" Margin="40,5,38.5,9" IsEnabled="False"/>
-                    <Button x:Name="btnCompare" Content="Compare" Grid.Row="2" Click="OpenCompareStockTab"
-                            Grid.Column="3"  IsEnabled="False" Margin="33,5,49.5,10"/>
+                    <chartingToolkit:Chart Name="pieChartStockInvestments" Title="Stock Investment Ratio" 
+                                           Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,5,0,1">
+                        <chartingToolkit:PieSeries Name="piChartStocks" DependentValuePath="Value" IndependentValuePath="Key" 
+                                                      ItemsSource="{Binding}" DataContext="{Binding}" Margin="10,0,10,10"/>
 
-                    <Button x:Name="btnComparePortfolio" Content="Portfolio Comparison" Grid.Column="4" Grid.Row="2"
+                    </chartingToolkit:Chart>
+
+                    <Button x:Name="btnNewTransaction" Content="New Transaction" Grid.Row="3" Click="OpenNewTransactionTab"
+                             Margin="76,4,8,10" />
+                    <Button x:Name="btnAnalyse" Content="Analyse" Grid.Row="3" Click="OpenAnalyseTab"
+                            Grid.Column="1" Margin="42,4,24,10" IsEnabled="False"/>
+                    <Button x:Name="btnShowTransactionTicker" Content="Show Transaction"  Grid.Row="3" Grid.Column="2"
+                            Click="ShowTransactionTicker" Margin="40,5,38,9" IsEnabled="False"/>
+                    <Button x:Name="btnCompare" Content="Compare" Grid.Row="3" Click="OpenCompareStockTab"
+                            Grid.Column="3"  IsEnabled="False" Margin="33,5,50,10"/>
+
+                    <Button x:Name="btnComparePortfolio" Content="Portfolio Comparison" Grid.Column="4" Grid.Row="3"
                             Click="OpenComparePortfolioTab" Margin="20,5,0,10" HorizontalAlignment="Left" Width="120"/>
 
                     <!--Button.RenderTransform>
@@ -318,7 +328,8 @@
                              Canvas.Top="230" Width="140" RenderTransformOrigin="0.486,0.346"/>
                     <Label x:Name="labelTransactionDate" Content="Transaction Date :" Canvas.Left="266" 
                            Canvas.Top="300" Width="108" HorizontalContentAlignment="Right"/>
-                    <DatePicker  x:Name="dateTransactionDate" Canvas.Left="399" Canvas.Top="302" Width="97"/>
+                    <DatePicker  x:Name="dateTransactionDate" Canvas.Left="399" Canvas.Top="302" Width="97"
+                                 SelectedDate="{x:Static sys:DateTime.Now}"/>
                     <Button x:Name="btnAddTransaction" Content="Add Transaction" Canvas.Left="286" 
                             Canvas.Top="371" Width="105" Click="AddTransaction" />
                     <Button x:Name="btnCancel" Content="Cancel" Canvas.Left="437" Canvas.Top="371" Width="75" Click="btnCancel_Click"/>
@@ -466,7 +477,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <Button x:Name="btnCloseCompareTab" Content="Close" Grid.Row="3" Grid.Column="1" 
-                             Width="100" Margin="118,10,117,10" Click="CloseCompareStocksTab" />
+                             Width="100" Margin="78,10,157,10" Click="CloseCompareStocksTab" />
                 </Grid>
 
             </TabItem>
@@ -703,7 +714,7 @@
                     </chartingToolkit:Chart>
 
                     <Button x:Name="btnClosePortfolioCompare" Content="Close" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
-                             Width="100" Margin="349,10,300,10" Click="CloseComparePortfolio" />
+                             Width="100" Margin="319,10,330,10" Click="CloseComparePortfolio" />
                 </Grid>
             </TabItem>
 
