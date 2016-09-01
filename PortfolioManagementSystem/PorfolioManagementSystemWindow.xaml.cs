@@ -77,18 +77,22 @@ namespace PortfolioManagementSystem
                 btnCompare.IsEnabled = false;
                 btnShowTransactionTicker.IsEnabled = false;
             }
-            if(dataGridInvestments.SelectedItems.Count == 1)
+            else if(dataGridInvestments.SelectedItems.Count == 1)
             {
                 btnShowTransactionTicker.IsEnabled = true;
                btnAnalyse.IsEnabled = true;
                 btnCompare.IsEnabled = false;
 
             }
-            if(dataGridInvestments.SelectedItems.Count >= 2)
+            else if(dataGridInvestments.SelectedItems.Count == 2)
             {
                 btnShowTransactionTicker.IsEnabled = false;
                 btnAnalyse.IsEnabled = false;
                 btnCompare.IsEnabled = true;
+            }
+            else
+            {
+                btnCompare.IsEnabled = false;
             }
         }
         
@@ -122,10 +126,19 @@ namespace PortfolioManagementSystem
 
         private void OpenNewTransactionTab(object sender, RoutedEventArgs e)
         {
-            
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 2;
-            tabNewTransaction.Visibility = Visibility.Visible;
+            AddTransactionWindow addTransactionWindow = new AddTransactionWindow(baseAddress);
+            bool? result = addTransactionWindow.ShowDialog();
+            if(result == true)
+            {
+                LoadInvestmentGrid("");
+                LoadTransactionGrid();
+                comboBoxPortfolio.SelectedIndex = 0;
+            }
 
+            else
+            {
+                //Do Nothing!
+            }
         }
 
         private void OpenAnalyseTab(object sender, RoutedEventArgs e)
@@ -248,6 +261,12 @@ namespace PortfolioManagementSystem
                 
                 tr.TransactionDate = helper.DateTimeResolve(tr.date);
                 tr.Date = tr.TransactionDate.ToShortDateString();
+            }
+            
+            txtTickerName.Text = "";
+            if (dataGridTransaction.Columns.Count == 4)
+            {
+                dataGridTransaction.Columns.Insert(0, clmTicker);
             }
             dataGridTransaction.ItemsSource = transactions;
             btnShowAllTransaction.IsEnabled = true;
@@ -504,6 +523,16 @@ namespace PortfolioManagementSystem
             ResetAddTransactionForm();
             tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
         }
+
+        private void CloseComparePortfolio(object sender, RoutedEventArgs e)
+        {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+        }
+
+        private void CloseCompareStocksTab(object sender, RoutedEventArgs e)
+        {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+        }
     }
 
 
@@ -559,7 +588,9 @@ namespace PortfolioManagementSystem
             stockProperties.Add(new StockProperties(tickers[1], stocksDetailCompare[1].avgChange,
                 stocksDetailCompare[1].volatility, stocksDetailCompare[1].liquidity));
             dataGridCompare.ItemsSource = stockProperties;
+            lineChartCompare.Title = "Stock Comparison : " + tickers[0] + " and " + tickers[1];
             radioCloseCompare.IsChecked = true;
+
             //MessageBox.Show(stocksDetailCompare[0].volatility);
             //MessageBox.Show(tickers[0] + " " + tickers[1]);
         }
@@ -673,9 +704,7 @@ namespace PortfolioManagementSystem
                 string posttAddress = baseAddress + "transactions/new";
                 helper.PostJsonData(posttAddress, jsonString);
                 ResetAddTransactionForm();
-                LoadInvestmentGrid("");
-                LoadTransactionGrid();
-                comboBoxPortfolio.SelectedIndex = 0;
+                
                 tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
                 tabNewTransaction.Visibility = Visibility.Collapsed;
             }

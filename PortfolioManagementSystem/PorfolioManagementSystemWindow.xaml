@@ -336,9 +336,11 @@
 
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="24*" />
-                        <RowDefinition Height="207*" />
-                        <RowDefinition Height="209*" />
+                        <RowDefinition Height="18*" />
+                        <RowDefinition Height="233*" />
+                        <RowDefinition Height="141*" />
+                        <RowDefinition Height="36*"/>
+                        <RowDefinition Height="12"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="250*"/>
@@ -403,8 +405,8 @@
                     </Grid>
                     <DataGrid x:Name="dataGridCompare" AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
-                              ColumnWidth="*" Grid.ColumnSpan="6" Grid.Row="3" Margin="0,0,-1,0"
-                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                              ColumnWidth="*" Grid.ColumnSpan="3" Grid.Row="2" Margin="0,0,-1,0"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.RowSpan="2">
                         <DataGrid.Style>
                             <Style TargetType="DataGrid">
                                 <Setter Property="AlternatingRowBackground" Value="Cyan"/>
@@ -463,7 +465,8 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
-
+                    <Button x:Name="btnCloseCompareTab" Content="Close" Grid.Row="3" Grid.Column="1" 
+                             Width="100" Margin="118,10,117,10" Click="CloseCompareStocksTab" />
                 </Grid>
 
             </TabItem>
@@ -667,7 +670,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem x:Name="tabComparePortfolio" Header="Compare Portfolios" Visibility="Collapsed">
+            <TabItem x:Name="tabComparePortfolio" Header="Compare Portfolios" Visibility="Visible">
                 <Grid Name="gridComparePortfolio" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
@@ -699,7 +702,8 @@
 
                     </chartingToolkit:Chart>
 
-
+                    <Button x:Name="btnClosePortfolioCompare" Content="Close" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
+                             Width="100" Margin="349,10,300,10" Click="CloseComparePortfolio" />
                 </Grid>
             </TabItem>
 

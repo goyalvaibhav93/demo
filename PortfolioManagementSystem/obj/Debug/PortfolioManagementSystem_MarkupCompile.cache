@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\App.xaml
-4-1667404975
+5-1079504888
 
-191337829622
+201867390131
 19611756717
-ConfirmAddTransaction.xaml;MainWindow.xaml;PorfolioManagementSystemWindow.xaml;TestConnection.xaml;
+AddTransactionWindow.xaml;ConfirmAddTransaction.xaml;MainWindow.xaml;PorfolioManagementSystemWindow.xaml;TestConnection.xaml;
 
 False
 

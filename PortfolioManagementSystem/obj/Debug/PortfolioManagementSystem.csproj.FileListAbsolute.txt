@@ -22,3 +22,5 @@ C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\bin\Debug\WPFToolkit.pdb
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\ConfirmAddTransaction.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\ConfirmAddTransaction.baml
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.g.cs
+C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.baml
