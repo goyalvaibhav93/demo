@@ -205,6 +205,18 @@
                         </DataGrid.Style>
                         <DataGrid.Columns>
 
+                            <DataGridTextColumn x:Name="clmDate"  Header="Date" Binding="{Binding Date}" IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn x:Name="clmTicker" Header="Ticker" Binding="{Binding ticker}"  IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
@@ -253,18 +265,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="clmDate"  Header="Date" Binding="{Binding TransactionDate}" IsReadOnly="True">
-                                <DataGridTextColumn.HeaderStyle>
-                                    <Style TargetType="DataGridColumnHeader">
-                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.HeaderStyle>
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center" />
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+                            
 
                         </DataGrid.Columns>
                     </DataGrid>
@@ -606,7 +607,9 @@
                         <RadioButton x:Name = "radioLowAnalyse" VerticalAlignment="Center" 
                                      HorizontalAlignment="Center" Checked="ShowLowGraph"
                                      Grid.Row="3" Grid.Column="0" Height="12" Margin="28,13,12,13" Width="12"/>
-                        <Label x:Name="labelLowAnalyse" Content="Low" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        <Label x:Name="labelLowAnalyse" Content="Low" Grid.Row="3" Grid.Column="1" 
+                               HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
+                               />
                         
                     </Grid>
 
@@ -713,7 +716,7 @@
                     </DataGrid>
 
                     <Button x:Name="btnCloseAnalyseTab" Content="Close" Grid.Row="4" 
-                            Grid.Column="3" Margin="10,5,8,10"/>
+                            Grid.Column="3" Margin="10,5,8,10" Click="CloseAnalyseTab"/>
 
                 </Grid>
             </TabItem>

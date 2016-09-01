@@ -468,6 +468,7 @@ namespace PortfolioManagementSystem
             foreach (Transaction tr in transactions)
             {
                 tr.TransactionDate = helper.DateTimeResolve(tr.date);
+                tr.Date = tr.TransactionDate.ToShortDateString();
             }
             
             dataGridTransaction.Columns.Remove(clmTicker);
@@ -492,7 +493,10 @@ namespace PortfolioManagementSystem
 
         }
 
-        
+        private void CloseAnalyseTab(object sender, RoutedEventArgs e)
+        {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+        }
     }
 
 
@@ -572,6 +576,7 @@ namespace PortfolioManagementSystem
             foreach(Transaction tr in transactions)
             {
                 tr.TransactionDate = helper.DateTimeResolve(tr.date);
+                tr.Date = tr.TransactionDate.ToShortDateString();
             }
             dataGridTransaction.ItemsSource = transactions;
         }

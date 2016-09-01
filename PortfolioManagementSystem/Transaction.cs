@@ -27,6 +27,7 @@ namespace PortfolioManagementSystem
         public double price { get; set; }
         [DataMember]
         public int units { get; set; }
+        public string Date { get; set; }
 
         // Constructor
         public Transaction(string ticker, TransactionType transactionType, string dateTime, double stockPrice, int units)
