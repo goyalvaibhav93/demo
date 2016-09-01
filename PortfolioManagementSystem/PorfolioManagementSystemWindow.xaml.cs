@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -38,7 +39,9 @@ namespace PortfolioManagementSystem
 
         public string baseAddress = "http://10.87.200.63:8080/PortfolioManagementSystemWeb/rest/";
 
-        static StockDetail stockDetail;
+        StockDetail stockDetailAnalyse;
+        List<StockDetail> stocksDetailCompare;
+        List<string> tickers;
 
         public PorfolioManagementSystemWindow()
         {
@@ -132,8 +135,7 @@ namespace PortfolioManagementSystem
         {
             tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
             tabCompare.Visibility = Visibility.Visible;
-
-
+            LoadCompareTab();
         }
 
         private void ChangePortfolio(object sender, SelectionChangedEventArgs e)
@@ -172,57 +174,57 @@ namespace PortfolioManagementSystem
         private void ShowVolumeGraph(object sender, RoutedEventArgs e)
         {
             List<KeyValuePair<DateTime, long>> graphPoints = new List<KeyValuePair<DateTime, long>>();
-            foreach (MarketStat marketStat in stockDetail.marketList)
+            foreach (MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 graphPoints.Add(new KeyValuePair<DateTime, long>(marketStat.Date, marketStat.volumeTraded));
             }
-            lineChartClose.ItemsSource = graphPoints;
-            lineChartClose.Title = "Volume Traded";
+            lineChartShowAnalyse.ItemsSource = graphPoints;
+            lineChartShowAnalyse.Title = "Volume Traded";
         }
 
         private void ShowLowGraph(object sender, RoutedEventArgs e)
         {
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
-            foreach (MarketStat marketStat in stockDetail.marketList)
+            foreach (MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
             }
-            lineChartClose.ItemsSource = graphPoints;
-            lineChartClose.Title = "Low Price";
+            lineChartShowAnalyse.ItemsSource = graphPoints;
+            lineChartShowAnalyse.Title = "Low Price";
         }
 
         private void ShowHighGraph(object sender, RoutedEventArgs e)
         {
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
-            foreach (MarketStat marketStat in stockDetail.marketList)
+            foreach (MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
             }
-            lineChartClose.ItemsSource = graphPoints;
-            lineChartClose.Title = "High Price";
+            lineChartShowAnalyse.ItemsSource = graphPoints;
+            lineChartShowAnalyse.Title = "High Price";
         }
 
         private void ShowCloseGraph(object sender, RoutedEventArgs e)
         {
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
-            foreach (MarketStat marketStat in stockDetail.marketList)
+            foreach (MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
-            lineChartClose.ItemsSource = graphPoints;
-            lineChartClose.Title = "Close Price";
+            lineChartShowAnalyse.ItemsSource = graphPoints;
+            lineChartShowAnalyse.Title = "Close Price";
 
         }
 
         private void ShowOpenGraph(object sender, RoutedEventArgs e)
         {
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
-            foreach (MarketStat marketStat in stockDetail.marketList)
+            foreach (MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
             }
-            lineChartClose.ItemsSource = graphPoints;
-            lineChartClose.Title = "Open Price";
+            lineChartShowAnalyse.ItemsSource = graphPoints;
+            lineChartShowAnalyse.Title = "Open Price";
         }
 
         private void ShowTransactionsBetweenDates(object sender, RoutedEventArgs e)
@@ -234,13 +236,80 @@ namespace PortfolioManagementSystem
             transactions = LoadGrid<Transaction>
                 (baseAddress + "transactions/dates?start=" +(fromDate-referenceDate).TotalMilliseconds 
                 +"&end="+(toDate-referenceDate).TotalMilliseconds);
-            dataGridTransaction.Columns.Remove(clmDate);
+            foreach (Transaction tr in transactions)
+            {
+                tr.TransactionDate = helper.DateTimeResolve(tr.date);
+            }
             dataGridTransaction.ItemsSource = transactions;
+        }
+
+        private void ShowCompareCloseGraph(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(tickers[0]+ stocksDetailCompare[0].volatility);
+            List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
+            
+            foreach (MarketStat marketStat in stocksDetailCompare[0].marketList)
+            {
+
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                MessageBox.Show(marketStat.Date.ToShortDateString());
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+
+            lineChart1.ItemsSource = graphPoints;
+            lineChart1.Title = tickers[0];
+
+            graphPoints = new List<KeyValuePair<DateTime, double>>();
+            foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
+            {
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
+            }
+            lineChart2.ItemsSource = graphPoints;
+            lineChart2.Title = tickers[1];
+
+        }
+
+        private void ShowCompareOpenGraph(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ShowCompareHighGraph(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ShowCompareLowGraph(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ShowCompareVolumeGraph(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 
+
     public partial class PorfolioManagementSystemWindow
     {
+        public void LoadCompareTab()
+        {
+            stocksDetailCompare = new List<StockDetail>();
+            tickers = new List<string>();
+            foreach (Investment investment in dataGridInvestments.SelectedItems)
+            {
+                tickers.Add(investment.ticker);
+            }
+            string jsonString = helper.DownloadJsonString(baseAddress + "stocks/compare?ticker1=" + tickers[0] + "&ticker2=" + tickers[1]);
+            MessageBox.Show(jsonString);
+            Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
+            stocksDetailCompare = helper.UnserializeListObjectFromJsonStream<StockDetail>(jsonStream);
+            MessageBox.Show(stocksDetailCompare[0].volatility);
+            MessageBox.Show(tickers[0] + " " + tickers[1]);
+        }
+
         public void LoadAnalyseTab()
         {
             string ticker = ((Investment)dataGridInvestments.SelectedItem).ticker;
@@ -248,19 +317,17 @@ namespace PortfolioManagementSystem
             string jsonString = helper.DownloadJsonString(baseAddress + "stocks/analyze/" + ticker);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
 
-            
-
-            stockDetail = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
-            foreach(MarketStat marketStat in stockDetail.marketList)
+            stockDetailAnalyse = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
+            foreach(MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
             }
 
-            txtAveChange.Text = stockDetail.avgChange.ToString();
-            txtLiquidity.Text = stockDetail.liquidity.ToString();
-            txtVolatility.Text = stockDetail.volatility.ToString();
-            radioClose.IsChecked = true;
-            dataGridMarketStats.ItemsSource = stockDetail.marketList;
+            txtAveChangeAnalyse.Text = stockDetailAnalyse.avgChange.ToString();
+            txtLiquidityAnalyse.Text = stockDetailAnalyse.liquidity.ToString();
+            txtVolatilityAnalyse.Text = stockDetailAnalyse.volatility.ToString();
+            radioCloseAnalyse.IsChecked = true;
+            dataGridMarketStatsAnalyse.ItemsSource = stockDetailAnalyse.marketList;
         }
         
         private void LoadTransactionGrid()
@@ -297,7 +364,7 @@ namespace PortfolioManagementSystem
 
             List<T> obj;
             string jsonString = helper.DownloadJsonString(uri);
-            MessageBox.Show(jsonString);
+            //MessageBox.Show(jsonString);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
             obj = helper.UnserializeListObjectFromJsonStream<T>(jsonStream);
             return obj;
