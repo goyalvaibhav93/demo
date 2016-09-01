@@ -113,6 +113,7 @@ namespace PortfolioManagementSystem
                 tabCompare.Visibility = Visibility.Collapsed;
                 tabAnalyseStock.Visibility = Visibility.Collapsed;
                 tabNewTransaction.Visibility = Visibility.Collapsed;
+                tabComparePortfolio.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -139,6 +140,7 @@ namespace PortfolioManagementSystem
             tabCtrlPorfolioManagementSystem.SelectedIndex = 3;
             tabCompare.Visibility = Visibility.Visible;
             LoadCompareTab();
+            
         }
 
         private void ChangePortfolio(object sender, SelectionChangedEventArgs e)
@@ -235,7 +237,7 @@ namespace PortfolioManagementSystem
             DateTime referenceDate = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             DateTime fromDate = (DateTime)dateFromDate.SelectedDate;
             DateTime toDate = (DateTime)dateToDate.SelectedDate;
-            MessageBox.Show((fromDate - referenceDate).TotalMilliseconds + "");
+            //MessageBox.Show((fromDate - referenceDate).TotalMilliseconds + "");
             transactions = LoadGrid<Transaction>
                 (baseAddress + "transactions/dates?start=" +(fromDate-referenceDate).TotalMilliseconds 
                 +"&end="+(toDate-referenceDate).TotalMilliseconds);
@@ -248,10 +250,18 @@ namespace PortfolioManagementSystem
 
         private void ShowCompareCloseGraph(object sender, RoutedEventArgs e)
         {
-            
+            double min = 5000, max = 5;
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
+                if (max < marketStat.close)
+                {
+                    max = marketStat.close;
+                }
+                if (min > marketStat.close)
+                {
+                    min = marketStat.close;
+                }
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
@@ -262,10 +272,18 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                
+                if (max < marketStat.close)
+                {
+                    max = marketStat.close;
+                }
+                if (min > marketStat.close)
+                {
+                    min = marketStat.close;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
-
+            lineChartCompareY.Minimum = (min-5 > 0)? min - 5:0;
+            lineChartCompareY.Maximum = max + 5;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
 
@@ -273,12 +291,20 @@ namespace PortfolioManagementSystem
 
         private void ShowCompareOpenGraph(object sender, RoutedEventArgs e)
         {
-            
-           
+
+            double min = 5000, max = 5;
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if (max < marketStat.open)
+                {
+                    max = marketStat.open;
+                }
+                if (min > marketStat.open)
+                {
+                    min = marketStat.open;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
             }
             lineChart2.ItemsSource = graphPoints;
@@ -289,21 +315,38 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                
+                if (max < marketStat.open)
+                {
+                    max = marketStat.open;
+                }
+                if (min > marketStat.open)
+                {
+                    min = marketStat.open;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.open));
             }
-
+            lineChartCompareY.Minimum = (min-5 > 0)? min - 5:0;
+            lineChartCompareY.Maximum = max + 5;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareHighGraph(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            double min = 5000, max = 5;
+            //MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if (max < marketStat.high)
+                {
+                    max = marketStat.high;
+                }
+                if (min > marketStat.high)
+                {
+                    min = marketStat.high;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
             }
             lineChart2.ItemsSource = graphPoints;
@@ -313,21 +356,39 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if (max < marketStat.high)
+                {
+                    max = marketStat.high;
+                }
+                if (min > marketStat.high)
+                {
+                    min = marketStat.high;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.high));
             }
-
+            lineChartCompareY.Minimum = (min-5 > 0)? min - 5:0;
+            lineChartCompareY.Maximum = max + 5;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareLowGraph(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            double min = 5000, max = 5;
+            //MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if(max < marketStat.low)
+                {
+                    max = marketStat.low;
+                }
+                if(min > marketStat.low)
+                {
+                    min = marketStat.low;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
             }
             lineChart2.ItemsSource = graphPoints;
@@ -337,21 +398,42 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                
+
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if (max < marketStat.low)
+                {
+                    max = marketStat.low;
+                }
+                if (min > marketStat.low)
+                {
+                    min = marketStat.low;
+                }
+
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.low));
             }
-
+            lineChartCompareY.Minimum = (min-5 > 0)? min - 5:0;
+            lineChartCompareY.Maximum = max+5;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
         }
 
         private void ShowCompareVolumeGraph(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
+            double min = 5000000, max = 5;
+            //MessageBox.Show(tickers[0] + stocksDetailCompare[0].volatility);
             List<KeyValuePair<DateTime, double>> graphPoints = new List<KeyValuePair<DateTime, double>>();
             foreach (MarketStat marketStat in stocksDetailCompare[1].marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                marketStat.Date = helper.DateTimeResolve(marketStat.date);
+                if (max < marketStat.volumeTraded)
+                {
+                    max = marketStat.volumeTraded;
+                }
+                if (min > marketStat.volumeTraded)
+                {
+                    min = marketStat.volumeTraded;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
             lineChart2.ItemsSource = graphPoints;
@@ -361,10 +443,18 @@ namespace PortfolioManagementSystem
             {
 
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
-                //
+                if (max < marketStat.volumeTraded)
+                {
+                    max = marketStat.volumeTraded;
+                }
+                if (min > marketStat.volumeTraded)
+                {
+                    min = marketStat.volumeTraded;
+                }
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
-
+            lineChartCompareY.Minimum = (min-1000 > 0)? min - 1000:0;
+            lineChartCompareY.Maximum = max + 1000;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
         }
@@ -396,13 +486,40 @@ namespace PortfolioManagementSystem
 
         private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
         {
+            tabCtrlPorfolioManagementSystem.SelectedIndex = 5;
+            tabComparePortfolio.Visibility = Visibility.Visible;
+            LoadComparePortfolioTab();
 
         }
+
+        
     }
 
 
     public partial class PorfolioManagementSystemWindow
     {
+        public void LoadComparePortfolioTab()
+        {
+            List<double> list = new List<double>();
+            string jsonString = helper.DownloadJsonString(baseAddress + "portfolios/compare");
+            Stream stream = helper.GenerateStreamFromJsonString(jsonString);
+            list = helper.UnserializeListObjectFromJsonStream<double>(stream);
+
+            List<KeyValuePair<string, double>> graphPoints = new List<KeyValuePair<string, double>>();
+            graphPoints.Add(new KeyValuePair<string, double>("Automobiles", list[3]));
+            graphPoints.Add(new KeyValuePair<string, double>("Finance", list[1]));
+            graphPoints.Add(new KeyValuePair<string, double>("Information Technology", list[5]));
+
+            double min = -5, max = 5;
+
+            min = (min < Minimum(list[1], list[3], list[5]))? min:  Minimum(list[1], list[3], list[5]) -5;
+            max = (max > Maximum(list[1], list[3], list[5]))? max:  Maximum(list[1], list[3], list[5]) +5;
+
+            barChartPortfolio.ItemsSource = graphPoints;
+            barChartPortfolioY.Minimum = min;
+            barChartPortfolioY.Maximum = max;
+        }
+
         public void LoadCompareTab()
         {
             stocksDetailCompare = new List<StockDetail>();
@@ -412,11 +529,19 @@ namespace PortfolioManagementSystem
                 tickers.Add(investment.ticker);
             }
             string jsonString = helper.DownloadJsonString(baseAddress + "stocks/compare?ticker1=" + tickers[0] + "&ticker2=" + tickers[1]);
-            MessageBox.Show(jsonString);
+            //MessageBox.Show(jsonString);
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
             stocksDetailCompare = helper.UnserializeListObjectFromJsonStream<StockDetail>(jsonStream);
-            MessageBox.Show(stocksDetailCompare[0].volatility);
-            MessageBox.Show(tickers[0] + " " + tickers[1]);
+
+            List<StockProperties> stockProperties = new List<StockProperties>();
+            stockProperties.Add(new StockProperties(tickers[0], stocksDetailCompare[0].avgChange, 
+                stocksDetailCompare[0].volatility, stocksDetailCompare[0].liquidity));
+            stockProperties.Add(new StockProperties(tickers[1], stocksDetailCompare[1].avgChange,
+                stocksDetailCompare[1].volatility, stocksDetailCompare[1].liquidity));
+            dataGridCompare.ItemsSource = stockProperties;
+            radioCloseCompare.IsChecked = true;
+            //MessageBox.Show(stocksDetailCompare[0].volatility);
+            //MessageBox.Show(tickers[0] + " " + tickers[1]);
         }
 
         public void LoadAnalyseTab()
@@ -515,6 +640,16 @@ namespace PortfolioManagementSystem
             txtNoOfUnits.Text = "";
             txtStockPrice.Text = "";
             txtTicker.Text = "";
+        }
+
+        public double Minimum(double a, double b, double c)
+        {
+            return ((a < b) ? a : b) < c ? ((a < b) ? a : b) : c;
+        }
+
+        public double Maximum(double a, double b, double c)
+        {
+            return ((a > b) ? a : b) > c ? ((a > b) ? a : b) : c;
         }
     }
 }

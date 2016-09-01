@@ -73,6 +73,7 @@
     <Compile Include="Product.cs" />
     <Compile Include="Stock.cs" />
     <Compile Include="StockDetail.cs" />
+    <Compile Include="StockProperties.cs" />
     <Compile Include="StockSummery.cs" />
     <Compile Include="TestConnection.xaml.cs">
       <DependentUpon>TestConnection.xaml</DependentUpon>

@@ -41,6 +41,7 @@
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width ="1*"/>
+                        <ColumnDefinition Width ="1*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Content="Portfolio" HorizontalContentAlignment="Right" Margin="76,0,0,10" />
@@ -50,7 +51,7 @@
 
                     <DataGrid x:Name="dataGridInvestments" AutoGenerateColumns="False" 
                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" 
-                              ColumnWidth="*" Grid.ColumnSpan="4" Grid.Row="1"
+                              ColumnWidth="*" Grid.ColumnSpan="5" Grid.Row="1"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                               ScrollViewer.CanContentScroll="True" 
@@ -134,10 +135,12 @@
                     <Button x:Name="btnAnalyse" Content="Analyse" Grid.Row="2" Click="OpenAnalyseTab"
                             Grid.Column="1" Margin="42.5,4,24,10" IsEnabled="False"/>
                     <Button x:Name="btnShowTransactionTicker" Content="Show Transaction"  Grid.Row="2" Grid.Column="2"
-                            Click="ShowTransactionTicker" Margin="40,5,38.5,9" />
+                            Click="ShowTransactionTicker" Margin="40,5,38.5,9" IsEnabled="False"/>
                     <Button x:Name="btnCompare" Content="Compare" Grid.Row="2" Click="OpenCompareStockTab"
                             Grid.Column="3"  IsEnabled="False" Margin="33,5,49.5,10"/>
 
+                    <Button x:Name="btnComparePortfolio" Content="PortfolioComparison" Grid.Column="4" Grid.Row="2"
+                            Click="OpenComparePortfolioTab" Margin="20,5,0,10" HorizontalAlignment="Left" Width="120"/>
 
                     <!--Button.RenderTransform>
                             <TransformGroup>
@@ -191,9 +194,6 @@
 
                     <Button x:Name="btnShowAllTransaction" Content="Show All" Grid.Column="2" Grid.Row="1"
                             Click="ShowAllTransaction" Margin="0,10,0,5" IsEnabled="false"/>
-
-                    <Button x:Name="btnComparePortfolio" Content="PortfolioComparison" Grid.Column="2" Grid.Row="1"
-                            Click="OpenComparePortfolioTab" Margin="0,10,0,5" IsEnabled="false"/>
 
                     <DataGrid x:Name="dataGridTransaction" AutoGenerateColumns="False"
                               HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
@@ -377,7 +377,7 @@
             </TabItem>
 
 
-            <TabItem x:Name="tabCompare" Header="Compare Stocks" Visibility="Collapsed">
+            <TabItem x:Name="tabCompare" Header="Compare Stocks" Visibility="Visible">
                 <Grid Name="gridAnalyze" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
@@ -395,6 +395,10 @@
                     </Grid.ColumnDefinitions>
 
                     <chartingToolkit:Chart Name="lineChartCompare" Title="Stock prices" Grid.Row="1" Grid.ColumnSpan="2">
+                        <chartingToolkit:Chart.Axes>
+                            <chartingToolkit:LinearAxis x:Name="lineChartCompareY" Orientation="Y"/>
+                        </chartingToolkit:Chart.Axes>
+
                         <chartingToolkit:LineSeries Name="lineChart1" Title="Stock plotter"   DependentValuePath="Value" 
                                       IndependentValuePath="Key" ItemsSource="{Binding}"  DataContext="{Binding}"        
                                       IsSelectionEnabled="True"/>
@@ -445,7 +449,68 @@
                         <Label x:Name="labelVolumeCompare" Content="Volume" Grid.Row="4" Grid.Column="2"
                                HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Margin="0,0,10,0"/>
                     </Grid>
+                    <DataGrid x:Name="dataGridCompare" AutoGenerateColumns="False"
+                              HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                              ColumnWidth="*" Grid.ColumnSpan="6" Grid.Row="3" Margin="0,0,-1,0"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid">
+                                <Setter Property="AlternatingRowBackground" Value="Cyan"/>
+                            </Style>
+                        </DataGrid.Style>
+                        <DataGrid.Columns>
 
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}"  IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Average Change" Binding="{Binding AveChange}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Volatity" Binding="{Binding Volatility}"  IsReadOnly="True">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Liquidity" Binding="{Binding Liquidity}" IsReadOnly="True" >
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                 </Grid>
 
@@ -542,10 +607,7 @@
                                      HorizontalAlignment="Center" Checked="ShowLowGraph"
                                      Grid.Row="3" Grid.Column="0" Height="12" Margin="28,13,12,13" Width="12"/>
                         <Label x:Name="labelLowAnalyse" Content="Low" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-                        <RadioButton x:Name = "radioVolumeAnalyse" VerticalAlignment="Center" 
-                                     HorizontalAlignment="Center" Grid.Row="4" Grid.Column="0"
-                                         Checked="ShowVolumeGraph" Height="12" Margin="28,12,12,13" Width="12" />
-                        <Label x:Name="labelVolumeAnalyse" Content="Volume" Grid.Row="4" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                        
                     </Grid>
 
 
@@ -656,33 +718,36 @@
                 </Grid>
             </TabItem>
 
-            <TabItem x:Name="tabComparePortfolio" Header="Compare Portfolios" Visibility="Visible">
+            <TabItem x:Name="tabComparePortfolio" Header="Compare Portfolios" Visibility="Collapsed">
                 <Grid Name="gridComparePortfolio" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
 
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="2*" />
-                        <RowDefinition Height="23*" />
-                        <RowDefinition />
-                        <RowDefinition Height="27*" />
-                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="18*" />
+                        <RowDefinition Height="366*" />
+                        <RowDefinition Height="45*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="119*"/>
-                        <ColumnDefinition Width="523*"/>
-                        <ColumnDefinition Width="107*"/>
+                        <ColumnDefinition Width="394*"/>
+                        <ColumnDefinition Width="12*"/>
+                        <ColumnDefinition Width="343*"/>
                     </Grid.ColumnDefinitions>
 
-                    <chartingToolkit:Chart Name="lineChartComparePortfolioBar" Title="PortfolioComparison" Grid.Row="1" Grid.Column="1">
-                        <chartingToolkit:ColumnSeries DependentValuePath="Value" IndependentValuePath="Key" 
+                    <chartingToolkit:Chart Name="lineChartComparePortfolioBar" Title="Portfolio Comparison" Grid.Row="1" Grid.Column="0">
+                        <chartingToolkit:Chart.Axes>
+                            <chartingToolkit:LinearAxis Name="barChartPortfolioY" Orientation="Y" Minimum="0" Maximum="100"/>
+                        </chartingToolkit:Chart.Axes>
+                        <chartingToolkit:ColumnSeries Name="barChartPortfolio"  DependentValuePath="Value" 
+                                                      IndependentValuePath="Key" Title="Profit/Loss"
                                                       ItemsSource="{Binding}" DataContext="{Binding}"/>
                     </chartingToolkit:Chart>
 
-                    <chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="PortfolioComparison" Grid.Row="3" Grid.Column="1">
+                    <chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="PortfolioComparison" Grid.Row="1" Grid.Column="2">
                         <chartingToolkit:PieSeries Name="pi" DependentValuePath="Value" IndependentValuePath="Key" 
                                                       ItemsSource="{Binding}" DataContext="{Binding}" Margin="10,0,10,10"/>
+
                     </chartingToolkit:Chart>
 
 

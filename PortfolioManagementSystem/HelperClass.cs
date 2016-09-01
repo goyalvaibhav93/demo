@@ -27,7 +27,7 @@ namespace PortfolioManagementSystem
             http.Method = "POST";
 
             string parsedContent = jsonString;
-            System.Windows.MessageBox.Show(parsedContent);
+           // System.Windows.MessageBox.Show(parsedContent);
             ASCIIEncoding encoding = new ASCIIEncoding();
             Byte[] bytes = encoding.GetBytes(parsedContent);
             Stream newStream = http.GetRequestStream();
@@ -39,7 +39,7 @@ namespace PortfolioManagementSystem
             var sr = new StreamReader(stream);
             var content = sr.ReadToEnd();
 
-            MessageBox.Show(content);
+           // MessageBox.Show(content);
         }
 
         public Stream GenerateStreamFromJsonString(string s)
