@@ -131,7 +131,7 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="P/L" Binding="{Binding profit}" IsReadOnly="True">
+                            <DataGridTextColumn Header="P/L %" Binding="{Binding profitString}" IsReadOnly="True">
                                 <DataGridTextColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -156,7 +156,7 @@
                     <Button x:Name="btnCompare" Content="Compare" Grid.Row="2" Click="OpenCompareStockTab"
                             Grid.Column="3"  IsEnabled="False" Margin="33,5,49.5,10"/>
 
-                    <Button x:Name="btnComparePortfolio" Content="PortfolioComparison" Grid.Column="4" Grid.Row="2"
+                    <Button x:Name="btnComparePortfolio" Content="Portfolio Comparison" Grid.Column="4" Grid.Row="2"
                             Click="OpenComparePortfolioTab" Margin="20,5,0,10" HorizontalAlignment="Left" Width="120"/>
 
                     <!--Button.RenderTransform>
@@ -693,11 +693,11 @@
                                                       ItemsSource="{Binding}" DataContext="{Binding}"/>
                     </chartingToolkit:Chart>
 
-                    <!--<chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="PortfolioComparison" Grid.Row="1" Grid.Column="2">
-                        <chartingToolkit:PieSeries Name="pi" DependentValuePath="Value" IndependentValuePath="Key" 
+                    <chartingToolkit:Chart Name="lineChartComparePortfolioPi" Title="Investment Ratio" Grid.Row="1" Grid.Column="2">
+                        <chartingToolkit:PieSeries Name="piChart" DependentValuePath="Value" IndependentValuePath="Key" 
                                                       ItemsSource="{Binding}" DataContext="{Binding}" Margin="10,0,10,10"/>
 
-                    </chartingToolkit:Chart>-->
+                    </chartingToolkit:Chart>
 
 
                 </Grid>

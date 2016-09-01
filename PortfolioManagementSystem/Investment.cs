@@ -10,6 +10,7 @@ namespace PortfolioManagementSystem
     [DataContract]
     public class Investment
     {
+        public string profitString { get; set; }
         public enum Portfolio { Finance, Automobiles, Information_Techonology}
         [DataMember]
         public string portfolio { get; set; }

@@ -23,5 +23,25 @@ namespace PortfolioManagementSystem
         {
             InitializeComponent();
         }
+        public ConfirmAddTransaction(string ticker, Transaction.TransactionType tType, double stockPrice, int units, DateTime date)
+        {
+            InitializeComponent();
+            txtContent.Text = "Ticker " + ticker + "\n" + "Transaction Type " + tType.ToString()+"\n" + "Stock Price " +
+                stockPrice + "\n" + "Units " + units + "\n" + "Transaction Date " + date.ToShortDateString();
+            
+        }
+
+        private void btnYes_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            this.Close();
+        }
+
+        private void btnNo_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            this.Close();
+        }
+
     }
 }

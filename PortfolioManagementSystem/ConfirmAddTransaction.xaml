@@ -7,10 +7,14 @@
         mc:Ignorable="d"
         Title="ConfirmAddTransaction" Height="268" Width="279">
     <Grid>
-        <Button x:Name="button" Content="Ok" HorizontalAlignment="Left" Margin="47,194,0,0" VerticalAlignment="Top" Width="75"/>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="62,69,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="110" Width="140"/>
-        <Button x:Name="button1" Content="No" HorizontalAlignment="Left" Margin="137,194,0,0" VerticalAlignment="Top" Width="75"/>
-        <Label x:Name="label" Content="Do you want to proceed?" HorizontalAlignment="Left" Margin="59,30,0,0" VerticalAlignment="Top" Height="25" Width="167"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="97*"/>
+            <ColumnDefinition Width="174*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnYes" Content="Yes" HorizontalAlignment="Left" Margin="47,191,0,0" VerticalAlignment="Top" Width="75" Click="btnYes_Click" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="txtContent" HorizontalAlignment="Left" Margin="47,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="110" Width="192" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnNo" Content="No" HorizontalAlignment="Left" Margin="40,191,0,0" VerticalAlignment="Top" Width="75" Click="btnNo_Click" Grid.Column="1"/>
+        <Label x:Name="label" Content="Do you want to proceed?" HorizontalAlignment="Left" Margin="59,26,0,0" VerticalAlignment="Top" Height="25" Width="167" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

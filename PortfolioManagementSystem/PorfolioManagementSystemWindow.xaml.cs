@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -54,8 +55,7 @@ namespace PortfolioManagementSystem
         private void AddTransaction(object sender, RoutedEventArgs e)
         {
             AddTransaction();
-            tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
-            tabNewTransaction.Visibility = Visibility.Collapsed;
+            
         }
 
         private void ClosingWindow(object sender, System.ComponentModel.CancelEventArgs e)
@@ -250,6 +250,7 @@ namespace PortfolioManagementSystem
                 tr.Date = tr.TransactionDate.ToShortDateString();
             }
             dataGridTransaction.ItemsSource = transactions;
+            btnShowAllTransaction.IsEnabled = true;
         }
 
         private void ShowCompareCloseGraph(object sender, RoutedEventArgs e)
@@ -481,7 +482,8 @@ namespace PortfolioManagementSystem
         {
             btnShowAllTransaction.IsEnabled = false;
             LoadTransactionGrid();
-            dataGridTransaction.Columns.Insert(0, clmTicker);
+            if(dataGridTransaction.Columns.Count == 4)
+                dataGridTransaction.Columns.Insert(0, clmTicker);
         }
 
         private void OpenComparePortfolioTab(object sender, RoutedEventArgs e)
@@ -530,6 +532,12 @@ namespace PortfolioManagementSystem
             barChartPortfolio.ItemsSource = graphPoints;
             barChartPortfolioY.Minimum = min;
             barChartPortfolioY.Maximum = max;
+            
+            graphPoints = new List<KeyValuePair<string, double>>();
+            graphPoints.Add(new KeyValuePair<string, double>("Automobiles", list[2]));
+            graphPoints.Add(new KeyValuePair<string, double>("Finance", list[0]));
+            graphPoints.Add(new KeyValuePair<string, double>("Information Technology", list[4]));
+            piChart.ItemsSource = graphPoints;
         }
 
         public void LoadCompareTab()
@@ -565,7 +573,7 @@ namespace PortfolioManagementSystem
             Stream jsonStream = helper.GenerateStreamFromJsonString(jsonString);
 
             stockDetailAnalyse = helper.UnserializeObjectFromJsonStream<StockDetail>(jsonStream);
-            int i = 0;
+            
             foreach(MarketStat marketStat in stockDetailAnalyse.marketList)
             {
                 marketStat.Date = helper.DateTimeResolve(marketStat.date);
@@ -607,6 +615,8 @@ namespace PortfolioManagementSystem
                 {
                     investment.color = "PROFIT";
                 }
+
+                investment.profitString = investment.profit.ToString("F2", CultureInfo.InvariantCulture) +"%";
             }
             //MessageBox.Show(investments[0].color+"");
             dataGridInvestments.ItemsSource = investments;
@@ -652,16 +662,29 @@ namespace PortfolioManagementSystem
                 transactionType, transactionDate.ToString("yyyy-MM-dd HH:mm:ss"), 
                 int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
-            
+            ConfirmAddTransaction confirm = new ConfirmAddTransaction(txtTicker.Text,
+                transactionType, int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);
+            bool? result = confirm.ShowDialog();
+            if(result == true)
+            {
 
-            MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
-            string jsonString = helper.GenerateJsonStringFromStream(mStream);
-            string posttAddress = baseAddress + "transactions/new";
-            helper.PostJsonData(posttAddress, jsonString);
-            ResetAddTransactionForm();
-            LoadInvestmentGrid("");
-            LoadTransactionGrid();
-            comboBoxPortfolio.SelectedIndex = 0;
+                MemoryStream mStream = helper.SerializeObjectToJsonStream(transaction);
+                string jsonString = helper.GenerateJsonStringFromStream(mStream);
+                string posttAddress = baseAddress + "transactions/new";
+                helper.PostJsonData(posttAddress, jsonString);
+                ResetAddTransactionForm();
+                LoadInvestmentGrid("");
+                LoadTransactionGrid();
+                comboBoxPortfolio.SelectedIndex = 0;
+                tabCtrlPorfolioManagementSystem.SelectedIndex = 0;
+                tabNewTransaction.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ResetAddTransactionForm();
+
+            }
+
         }
 
         private void ResetAddTransactionForm()
@@ -669,6 +692,7 @@ namespace PortfolioManagementSystem
             txtNoOfUnits.Text = "";
             txtStockPrice.Text = "";
             txtTicker.Text = "";
+            dateTransactionDate.SelectedDate = null;
         }
 
         public double Minimum(double a, double b, double c)
