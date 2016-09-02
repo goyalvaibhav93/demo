@@ -54,7 +54,7 @@ namespace PortfolioManagementSystem
                 double.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
                 ConfirmAddTransaction confirm = new ConfirmAddTransaction(txtTicker.Text,
-                    transactionType, int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);
+                    transactionType, double.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);
                 bool? result1 = confirm.ShowDialog();
                 if (result1 == true)
                 {
