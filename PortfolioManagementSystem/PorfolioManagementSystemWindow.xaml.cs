@@ -40,7 +40,7 @@ namespace PortfolioManagementSystem
 
         List<MarketStat> marketStats = new List<MarketStat>();
 
-        public string baseAddress = "http://10.87.231.175:8080/PortfolioManagementSystemWeb/rest/";
+        public string baseAddress = "http://10.87.207.78:8080/PortfolioManagementSystemWeb/rest/";
 
         StockDetail stockDetailAnalyse;
         List<StockDetail> stocksDetailCompare;

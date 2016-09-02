@@ -45,7 +45,7 @@ namespace PortfolioManagementSystem
             DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
             int n;
             double m;
-            int result = DateTime.Compare(transactionDate, DateTime.Now.AddDays(1));
+            int result = DateTime.Compare(transactionDate, DateTime.Now);
             if(result <= 0 && int.TryParse(txtNoOfUnits.Text, out n) && n>0 && double.TryParse(txtStockPrice.Text, out m) &&
                 (radioButtonBuy.IsChecked == true || radioButtonSell.IsChecked== true))
             {
