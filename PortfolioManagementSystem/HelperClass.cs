@@ -33,13 +33,19 @@ namespace PortfolioManagementSystem
             Stream newStream = http.GetRequestStream();
             newStream.Write(bytes, 0, bytes.Length);
             newStream.Close();
-            var response = http.GetResponse();
-            
-            var stream = response.GetResponseStream();
-            var sr = new StreamReader(stream);
-            var content = sr.ReadToEnd();
+            try {
 
-           MessageBox.Show(content);
+                var response = http.GetResponse();
+
+                var stream = response.GetResponseStream();
+                var sr = new StreamReader(stream);
+                var content = sr.ReadToEnd();
+
+                MessageBox.Show(content);
+            }catch(System.Net.WebException e)
+            {
+                MessageBox.Show("You don't have enough Units of this stock");
+            }
         }
 
         public Stream GenerateStreamFromJsonString(string s)

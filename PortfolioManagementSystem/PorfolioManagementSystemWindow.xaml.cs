@@ -40,7 +40,7 @@ namespace PortfolioManagementSystem
 
         List<MarketStat> marketStats = new List<MarketStat>();
 
-        public string baseAddress = "http://10.87.207.78:8080/PortfolioManagementSystemWeb/rest/";
+        public string baseAddress = "http://10.87.231.175:8080/PortfolioManagementSystemWeb/rest/";
 
         StockDetail stockDetailAnalyse;
         List<StockDetail> stocksDetailCompare;
@@ -250,26 +250,34 @@ namespace PortfolioManagementSystem
         private void ShowTransactionsBetweenDates(object sender, RoutedEventArgs e)
         {
             DateTime referenceDate = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            DateTime fromDate = (DateTime)dateFromDate.SelectedDate;
-            DateTime toDate = (DateTime)dateToDate.SelectedDate;
-            //MessageBox.Show((fromDate - referenceDate).TotalMilliseconds + "");
-            transactions = LoadGrid<Transaction>
-                (baseAddress + "transactions/dates?start=" +(fromDate-referenceDate).TotalMilliseconds 
-                +"&end="+(toDate-referenceDate).TotalMilliseconds);
-            foreach (Transaction tr in transactions)
+
+            if (dateToDate.SelectedDate != null & dateFromDate.SelectedDate != null)
             {
-                
-                tr.TransactionDate = helper.DateTimeResolve(tr.date);
-                tr.Date = tr.TransactionDate.ToShortDateString();
+                DateTime fromDate = (DateTime)dateFromDate.SelectedDate;
+                DateTime toDate = (DateTime)dateToDate.SelectedDate;
+                //MessageBox.Show((fromDate - referenceDate).TotalMilliseconds + "");
+                transactions = LoadGrid<Transaction>
+                    (baseAddress + "transactions/dates?start=" + (fromDate - referenceDate).TotalMilliseconds
+                    + "&end=" + (toDate - referenceDate).TotalMilliseconds);
+                foreach (Transaction tr in transactions)
+                {
+
+                    tr.TransactionDate = helper.DateTimeResolve(tr.date);
+                    tr.Date = tr.TransactionDate.ToShortDateString();
+                }
+
+                txtTickerName.Text = "";
+                if (dataGridTransaction.Columns.Count == 4)
+                {
+                    dataGridTransaction.Columns.Insert(0, clmTicker);
+                }
+                dataGridTransaction.ItemsSource = transactions;
+                btnShowAllTransaction.IsEnabled = true;
             }
-            
-            txtTickerName.Text = "";
-            if (dataGridTransaction.Columns.Count == 4)
+            else
             {
-                dataGridTransaction.Columns.Insert(0, clmTicker);
+                MessageBox.Show("Enter Dates");
             }
-            dataGridTransaction.ItemsSource = transactions;
-            btnShowAllTransaction.IsEnabled = true;
         }
 
         private void ShowCompareCloseGraph(object sender, RoutedEventArgs e)
@@ -307,7 +315,7 @@ namespace PortfolioManagementSystem
                 graphPoints.Add(new KeyValuePair<DateTime, double>(marketStat.Date, marketStat.close));
             }
             lineChartCompareY.Minimum = (min-5 > 0)? min - 5:0;
-            lineChartCompareY.Maximum = max + 5;
+            lineChartCompareY.Maximum = max + 15;
             lineChart1.ItemsSource = graphPoints;
             lineChart1.Title = tickers[0];
 

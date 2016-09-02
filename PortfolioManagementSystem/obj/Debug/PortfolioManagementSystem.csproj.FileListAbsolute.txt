@@ -24,3 +24,28 @@ C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\ConfirmAddTransaction.baml
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.g.cs
 C:\Users\Grad13\Downloads\Course Documents\Practice\C#\PortfolioManagementSystem\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\PortfolioManagementSystem.exe.config
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.exe
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.pdb
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\PortfolioManagementSystem.exe
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\PortfolioManagementSystem.pdb
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\WPFToolkit.dll
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.pdb
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\bin\Debug\WPFToolkit.pdb
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.csprojResolveAssemblyReference.cache
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\ConfirmAddTransaction.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\MainWindow.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PorfolioManagementSystemWindow.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\TestConnection.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\App.g.cs
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem_MarkupCompile.cache
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem_MarkupCompile.lref
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\AddTransactionWindow.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\ConfirmAddTransaction.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\MainWindow.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PorfolioManagementSystemWindow.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\TestConnection.baml
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.g.resources
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.Properties.Resources.resources
+C:\Users\Grad55\Desktop\demo\PortfolioManagementSystem\obj\Debug\PortfolioManagementSystem.csproj.GenerateResource.Cache
