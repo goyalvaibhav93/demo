@@ -45,13 +45,13 @@ namespace PortfolioManagementSystem
             DateTime transactionDate = (DateTime)dateTransactionDate.SelectedDate;
             int n;
             double m;
-            int result = DateTime.Compare(transactionDate, DateTime.Now);
+            int result = DateTime.Compare(transactionDate, DateTime.Now.AddDays(1));
             if(result <= 0 && int.TryParse(txtNoOfUnits.Text, out n) && n>0 && double.TryParse(txtStockPrice.Text, out m) &&
                 (radioButtonBuy.IsChecked == true || radioButtonSell.IsChecked== true))
             {
                 Transaction transaction = new Transaction(txtTicker.Text,
                 transactionType, transactionDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
+                double.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text));
 
                 ConfirmAddTransaction confirm = new ConfirmAddTransaction(txtTicker.Text,
                     transactionType, int.Parse(txtStockPrice.Text), int.Parse(txtNoOfUnits.Text), transactionDate);

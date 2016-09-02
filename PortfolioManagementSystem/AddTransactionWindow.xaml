@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PortfolioManagementSystem"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="AddTransactionWindow" Height="414" Width="506">
+        Title="Add Transaction" Height="414" Width="506">
     <Canvas Name="gridAddDelete" Margin="0,4,1,-4" 
                       Height="{Binding ActualHeight*0.8, ElementName=tabCtrlPorfolioManagementSystem}"
                       Width="{Binding ActualWidth*0.8, ElementName=tabCtrlPorfolioManagementSystem}">
